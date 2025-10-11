@@ -17,7 +17,6 @@ public abstract class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Setter(AccessLevel.PROTECTED)
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
@@ -29,6 +28,12 @@ public abstract class Profile {
     public Profile(String name, String document) {
         updateName(name);
         updateDocument(document);
+    }
+
+    public void assignUser(User user) {
+        if (user == null) throw new IllegalArgumentException("User cannot be null");
+        if (this.user != null) throw new IllegalStateException("Profile already assigned to another user");
+        this.user = user;
     }
 
     public void updateName(String name) {

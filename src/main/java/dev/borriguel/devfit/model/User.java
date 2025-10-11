@@ -48,7 +48,7 @@ public class User {
     public void assignProfile(Profile profile) {
         if (profile == null) throw new IllegalArgumentException("Profile cannot be null");
         this.profile = profile;
-        profile.setUser(this);
+        profile.assignUser(this);
     }
 
     public void assignRole(Role role) {
