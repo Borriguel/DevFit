@@ -1,10 +1,8 @@
 package dev.borriguel.devfit.model;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,7 +19,6 @@ public class Member extends Profile {
     private BigDecimal height;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "unit_id", nullable = false)
-    @Setter(AccessLevel.PACKAGE)
     private GymUnit unit;
     @OneToMany(mappedBy = "member", orphanRemoval = true)
     private List<TrainingPlan> plans = new ArrayList<>();
@@ -42,7 +39,7 @@ public class Member extends Profile {
         this.goal = goal;
     }
 
-   public void updateMetrics(BigDecimal weight, BigDecimal height) {
+    public void updateMetrics(BigDecimal weight, BigDecimal height) {
         if (weight.compareTo(BigDecimal.ZERO) < 0) throw new IllegalArgumentException("Weight cannot be negative");
         if (height.compareTo(BigDecimal.ZERO) < 0) throw new IllegalArgumentException("Height cannot be negative");
         if (weight.stripTrailingZeros().scale() > 2) throw new IllegalArgumentException("Weight cannot have more than 2 decimal places");
@@ -55,5 +52,12 @@ public class Member extends Profile {
         if (!plans.contains(plan)) {
             plans.add(plan);
         }
+    }
+
+    public TrainingPlan requestTrainingPlan(PersonalTrainer personalTrainer, String title) {
+        if (personalTrainer == null) throw new IllegalArgumentException("Personal trainer cannot be null");
+        if (!this.getUnit().equals(personalTrainer.getUnit())) throw new IllegalArgumentException("Personal trainer must be assigned to the same gym unit");
+        if (this.getGoal() == null) throw new IllegalStateException("Member must have a goal");
+        return new TrainingPlan(title, this.getGoal(), personalTrainer, this);
     }
 }
