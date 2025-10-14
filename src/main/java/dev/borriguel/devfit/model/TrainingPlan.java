@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "training_plans")
@@ -66,5 +67,17 @@ public class TrainingPlan {
         if (endDate == null) throw new IllegalArgumentException("End date cannot be null");
         if (endDate.isBefore(startDate)) throw new IllegalArgumentException("End date cannot be before start date");
         this.endDate = endDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        TrainingPlan that = (TrainingPlan) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "exercise_sets")
 @Getter
@@ -46,5 +48,17 @@ public class ExerciseSet {
     public void updateSets(int sets) {
         if (sets < 0) throw new IllegalArgumentException("Sets cannot be negative");
         this.sets = sets;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        ExerciseSet that = (ExerciseSet) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

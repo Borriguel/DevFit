@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "events")
@@ -79,5 +80,17 @@ public class Event {
         if (date == null) throw new IllegalArgumentException("Date cannot be null");
         if (date.isBefore(LocalDateTime.now())) throw new IllegalArgumentException("Date cannot be in the past");
         this.date = date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return Objects.equals(id, event.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }
