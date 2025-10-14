@@ -75,7 +75,7 @@ public class GymUnit {
         if (monthlyFee == null) throw new IllegalArgumentException("Monthly fee cannot be null");
         if (monthlyFee.compareTo(BigDecimal.ZERO) < 0) throw new IllegalArgumentException("Monthly fee cannot be negative");
         if (monthlyFee.compareTo(BigDecimal.ZERO) == 0) throw new IllegalArgumentException("Monthly fee cannot be zero");
-        if (monthlyFee.scale() > 2) throw new IllegalArgumentException("Monthly fee cannot have more than 2 decimal places");
+        if (monthlyFee.stripTrailingZeros().scale() > 2) throw new IllegalArgumentException("Monthly fee cannot have more than 2 decimal places");
         this.monthlyFee = monthlyFee;
     }
 }

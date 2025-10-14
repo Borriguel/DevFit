@@ -45,8 +45,8 @@ public class Member extends Profile {
    public void updateMetrics(BigDecimal weight, BigDecimal height) {
         if (weight.compareTo(BigDecimal.ZERO) < 0) throw new IllegalArgumentException("Weight cannot be negative");
         if (height.compareTo(BigDecimal.ZERO) < 0) throw new IllegalArgumentException("Height cannot be negative");
-        if (weight.scale() > 2) throw new IllegalArgumentException("Weight cannot have more than 2 decimal places");
-        if (height.scale() > 2) throw new IllegalArgumentException("Height cannot have more than 2 decimal places");
+        if (weight.stripTrailingZeros().scale() > 2) throw new IllegalArgumentException("Weight cannot have more than 2 decimal places");
+        if (height.stripTrailingZeros().scale() > 2) throw new IllegalArgumentException("Height cannot have more than 2 decimal places");
         this.weight = weight;
         this.height = height;
     }
