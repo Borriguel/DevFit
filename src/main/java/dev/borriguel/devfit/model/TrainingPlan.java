@@ -54,7 +54,7 @@ public class TrainingPlan {
     public void updateTitle(String title) {
         if (title.isBlank()) throw new IllegalArgumentException("Title cannot be blank");
         if (title.length() < 3) throw new IllegalArgumentException("Title must be at least 3 characters long");
-        if (title.length() > 50) throw new IllegalArgumentException("Title cannot be longer than 20 characters");
+        if (title.length() > 20) throw new IllegalArgumentException("Title cannot be longer than 20 characters");
         this.title = title;
     }
 
