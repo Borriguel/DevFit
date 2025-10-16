@@ -24,7 +24,7 @@ public abstract class Profile {
     @Column(nullable = false, length = 11)
     private String document;
 
-    public Profile(String name, String document) {
+    protected Profile(String name, String document) {
         updateName(name);
         updateDocument(document);
     }
