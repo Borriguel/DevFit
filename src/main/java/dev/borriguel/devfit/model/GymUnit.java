@@ -39,17 +39,20 @@ public class GymUnit {
         if (this.manager != null) throw new IllegalStateException("Gym unit already has a manager");
         if (manager == null) throw new IllegalArgumentException("Manager cannot be null");
         if (manager.getUnit() != null) throw new IllegalArgumentException("Manager already assigned to another gym unit");
+        this.manager = manager;
         manager.assignUnit(this);
     }
 
     public void assignMember(Member member) {
         if (member == null) throw new IllegalArgumentException("Member cannot be null");
+        if (members.contains(member)) throw new IllegalArgumentException("Member already assigned to this gym unit");
         members.add(member);
         member.assignUnit(this);
     }
 
     public void assignPersonalTrainer(PersonalTrainer personalTrainer) {
         if (personalTrainer == null) throw new IllegalArgumentException("Personal cannot be null");
+        if (personalTrainers.contains(personalTrainer)) throw new IllegalArgumentException("Personal trainer already assigned to this gym unit");
         personalTrainers.add(personalTrainer);
         personalTrainer.assignUnit(this);
     }

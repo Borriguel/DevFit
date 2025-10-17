@@ -26,7 +26,6 @@ public class PersonalTrainer extends Profile {
     public void assignUnit(GymUnit unit) {
         if (this.unit != null) throw new IllegalStateException("Personal trainer already assigned to a gym unit");
         if (unit == null) throw new IllegalArgumentException("Gym unit cannot be null");
-        if (unit.getPersonalTrainers().contains(this)) throw new IllegalArgumentException("Gym unit already contains this personal trainer");
         this.unit = unit;
     }
 

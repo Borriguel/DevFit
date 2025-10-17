@@ -27,10 +27,9 @@ public class Member extends Profile {
         super(name, document);
     }
 
-    public void assignUnit(GymUnit unit) {
+    void assignUnit(GymUnit unit) {
         if (this.unit != null) throw new IllegalStateException("Member already assigned to a gym unit");
         if (unit == null) throw new IllegalArgumentException("Unit cannot be null");
-        if (unit.getMembers().contains(this)) throw new IllegalArgumentException("Unit already contains this member");
         this.unit = unit;
     }
 

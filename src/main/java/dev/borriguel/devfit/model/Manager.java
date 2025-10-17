@@ -25,7 +25,6 @@ public class Manager extends Profile {
     public void assignUnit(GymUnit unit) {
         if (this.unit != null) throw new IllegalStateException("Manager already assigned to a gym unit");
         if (unit == null) throw new IllegalArgumentException("Unit cannot be null");
-        if (unit.getManager() != null) throw new IllegalArgumentException("Unit already assigned to a manager");
         this.unit = unit;
     }
 }
