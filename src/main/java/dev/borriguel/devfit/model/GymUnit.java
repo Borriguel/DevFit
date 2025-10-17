@@ -39,7 +39,6 @@ public class GymUnit {
         if (this.manager != null) throw new IllegalStateException("Gym unit already has a manager");
         if (manager == null) throw new IllegalArgumentException("Manager cannot be null");
         if (manager.getUnit() != null) throw new IllegalArgumentException("Manager already assigned to another gym unit");
-        this.manager = manager;
         manager.assignUnit(this);
     }
 
