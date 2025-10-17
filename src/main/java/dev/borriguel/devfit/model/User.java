@@ -24,11 +24,10 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Profile profile;
 
-    public User(String email, String password, Role role, Profile profile) {
+    public User(String email, String password, Role role) {
         updateEmail(email);
         updatePassword(password);
         assignRole(role);
-        this.profile = profile;
     }
 
     public void updatePassword(String password) {
