@@ -51,4 +51,13 @@ public class GymUnitService {
         var gymUnit = getById(id);
         repository.delete(gymUnit);
     }
+
+    @Transactional
+    public GymUnit updateById(Long id, GymUnit updated) {
+        var gymUnitToUpdate = getById(id);
+        gymUnitToUpdate.updateName(updated.getName());
+        gymUnitToUpdate.updateAddress(updated.getAddress());
+        gymUnitToUpdate.updateMonthlyFee(updated.getMonthlyFee());
+        return repository.save(gymUnitToUpdate);
+    }
 }

@@ -38,6 +38,12 @@ public class GymUnitController {
         return mapper.toGymUnitResponseDto(updatedGymUnit);
     }
 
+    @PutMapping("/{id}")
+    public GymUnitResponseDto updateById(@PathVariable Long id, @RequestBody GymUnitRequestDto dto) {
+        var updatedGymUnit = service.updateById(id, mapper.toGymUnit(dto));
+        return mapper.toGymUnitResponseDto(updatedGymUnit);
+    }
+
     @GetMapping
     public Page<GymUnitResponseDto> getAll(@ParameterObject Pageable page) {
         return service.getAllAsDto(page);
