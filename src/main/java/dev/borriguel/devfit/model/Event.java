@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,14 +31,13 @@ public class Event {
     @JoinTable(
             joinColumns = @JoinColumn(name = "event_id"),
             inverseJoinColumns = @JoinColumn(name = "profile_id"))
-    private List<Profile> attendees;
+    private List<Profile> attendees = new ArrayList<>();
 
-    public Event(String title, String description, String location, LocalDateTime date, GymUnit unit) {
+    public Event(String title, String description, String location, LocalDateTime date) {
         updateTitle(title);
         updateDescription(description);
         updateLocation(location);
         updateDate(date);
-        assignUnit(unit);
     }
 
     public void assignUnit(GymUnit unit) {
