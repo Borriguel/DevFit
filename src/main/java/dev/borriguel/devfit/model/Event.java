@@ -49,11 +49,14 @@ public class Event {
     public void assignAttendee(Profile profile) {
         if (profile == null) throw new IllegalArgumentException("Attendee cannot be null");
         if (attendees.contains(profile)) throw new IllegalArgumentException("Attendee already assigned to this event");
+        if (date.isBefore(LocalDateTime.now())) throw new IllegalArgumentException("Cannot add attendees to past events");
         attendees.add(profile);
     }
 
     public void removeAttendee(Profile profile) {
         if (profile == null) throw new IllegalArgumentException("Attendee cannot be null");
+        if (!attendees.contains(profile)) throw new IllegalArgumentException("Attendee not assigned to this event");
+        if (date.isBefore(LocalDateTime.now())) throw new IllegalArgumentException("Cannot remove attendees from past events");
         attendees.remove(profile);
     }
 
