@@ -57,5 +57,13 @@ public class EventService {
         repository.delete(event);
     }
 
-
+    @Transactional
+    public Event updateById(Long id, Event eventUpdated) {
+        var eventToUpdate = getById(id);
+        eventToUpdate.updateTitle(eventUpdated.getTitle());
+        eventToUpdate.updateDescription(eventUpdated.getDescription());
+        eventToUpdate.updateLocation(eventUpdated.getLocation());
+        eventToUpdate.updateDate(eventUpdated.getDate());
+        return repository.save(eventToUpdate);
+    }
 }

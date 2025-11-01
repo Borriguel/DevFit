@@ -45,4 +45,10 @@ public class EventController {
     public void deleteById(@PathVariable Long id) {
         service.deleteById(id);
     }
+
+    @PutMapping("/{id}")
+    public EventResponseDto updateById(@PathVariable Long id, @RequestBody EventRequestDto dto) {
+        var eventUpdated = mapper.toEvent(dto);
+        return mapper.toEventResponseDto(service.updateById(id, eventUpdated));
+    }
 }
