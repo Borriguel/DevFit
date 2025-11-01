@@ -19,6 +19,7 @@ public class EventService {
     private final EventRepository repository;
     private final EventMapper mapper;
     private final GymUnitService gymUnitService;
+    private final ProfileService profileService;
 
     @Transactional
     public Event createEvent(Event event, Long gymId) {
@@ -65,5 +66,21 @@ public class EventService {
         eventToUpdate.updateLocation(eventUpdated.getLocation());
         eventToUpdate.updateDate(eventUpdated.getDate());
         return repository.save(eventToUpdate);
+    }
+
+    @Transactional
+    public void joinEvent(Long id, Long profileId) {
+        var event = getById(id);
+        var profile = profileService.getById(profileId);
+        event.assignAttendee(profile);
+        repository.save(event);
+    }
+
+    @Transactional
+    public void leaveEvent(Long id, Long profileId) {
+        var event = getById(id);
+        var profile = profileService.getById(profileId);
+        event.removeAttendee(profile);
+        repository.save(event);
     }
 }

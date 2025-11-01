@@ -51,4 +51,16 @@ public class EventController {
         var eventUpdated = mapper.toEvent(dto);
         return mapper.toEventResponseDto(service.updateById(id, eventUpdated));
     }
+
+    @PostMapping("/{id}/join/profile/{profileId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void joinEvent(@PathVariable Long id, @PathVariable Long profileId) {
+        service.joinEvent(id, profileId);
+    }
+
+    @PostMapping("/{id}/leave/profile/{profileId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void leaveEvent(@PathVariable Long id, @PathVariable Long profileId) {
+        service.leaveEvent(id, profileId);
+    }
 }
