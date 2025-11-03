@@ -50,7 +50,7 @@ public class GymEquipment {
 
     public void updateCategory(Category category) {
         if (category == null) throw new IllegalArgumentException("Category cannot be null");
-        if (this.category.equals(category)) throw new IllegalArgumentException("Category already assigned to this equipment");
+        if (this.category == category) throw new IllegalArgumentException("Category already assigned to this equipment");
         this.category = category;
     }
 }
