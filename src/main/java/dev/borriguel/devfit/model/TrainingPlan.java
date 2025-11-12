@@ -36,8 +36,8 @@ public class TrainingPlan {
         if (personal == null || member == null) throw new IllegalArgumentException("Personal and member are required");
         if (personal.getUnit() != member.getUnit()) throw new IllegalArgumentException("Personal and member must be assigned to the same gym unit");
         if (goal == null) throw new IllegalArgumentException("Goal cannot be null");
-        this.title = title;
-        this.goal = goal;
+        updateTitle(title);
+        updateGoal(goal);
         this.personal = personal;
         this.member = member;
         member.assignTrainingPlan(this);
