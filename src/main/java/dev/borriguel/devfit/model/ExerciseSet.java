@@ -33,6 +33,7 @@ public class ExerciseSet {
         if (this.session != null) throw new IllegalStateException("Exercise set already assigned to a training session");
         if (session == null) throw new IllegalArgumentException("Session cannot be null");
         this.session = session;
+        session.addExercise(this);
     }
 
     public void assignEquipment(GymEquipment equipment) {
