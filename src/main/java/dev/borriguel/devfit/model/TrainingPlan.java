@@ -48,7 +48,6 @@ public class TrainingPlan {
         if (session == null) throw new IllegalArgumentException("Session cannot be null");
         if (sessions.contains(session)) throw new IllegalArgumentException("Session already assigned to this plan");
         sessions.add(session);
-        session.assignPlan(this);
     }
 
     public void updateTitle(String title) {

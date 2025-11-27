@@ -1,13 +1,13 @@
 package dev.borriguel.devfit.service;
 
-import dev.borriguel.devfit.model.Goal;
 import dev.borriguel.devfit.model.TrainingPlan;
+import dev.borriguel.devfit.model.dtos.TrainingPlanRequestDto;
+import dev.borriguel.devfit.model.dtos.TrainingPlanUpdateRequestDto;
 import dev.borriguel.devfit.repository.TrainingPlanRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -18,15 +18,27 @@ public class TrainingPlanService {
     private final MemberService memberService;
 
     @Transactional
-    public TrainingPlan createTrainingPlan(String title, Goal goal, Long personalId, Long memberId) {
-        var personal = personalService.getById(personalId);
-        var member = memberService.getById(memberId);
-        var trainingPlan = new TrainingPlan(title, goal, personal, member);
+    public TrainingPlan createTrainingPlan(TrainingPlanRequestDto dto) {
+        var personal = personalService.getById(dto.personalTrainerId());
+        var member = memberService.getById(dto.memberId());
+        var trainingPlan = new TrainingPlan(dto.title(), dto.goal(), personal, member);
         return repository.save(trainingPlan);
     }
 
     public TrainingPlan getById(Long id) {
         return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Training plan not found"));
+    }
+
+    public TrainingPlan getByIdWithPersonal(Long id) {
+        return repository.findByIdWithPersonal(id).orElseThrow(() -> new IllegalArgumentException("Training plan not found"));
+    }
+
+    public TrainingPlan getByIdWithMember(Long id) {
+        return repository.findByIdWithMember(id).orElseThrow(() -> new IllegalArgumentException("Training plan not found"));
+    }
+
+    public TrainingPlan getByIdWithPersonalAndMember(Long id) {
+        return repository.findByIdWithPersonalAndMember(id).orElseThrow(() -> new IllegalArgumentException("Training plan not found"));
     }
 
     public List<TrainingPlan> getAllByMemberId(Long memberId) {
@@ -38,11 +50,11 @@ public class TrainingPlanService {
     }
 
     @Transactional
-    public TrainingPlan updateById(Long id, String title, Goal goal, LocalDate endDate) {
+    public TrainingPlan updateById(Long id, TrainingPlanUpdateRequestDto dto) {
         var trainingPlanToUpdate = getById(id);
-        trainingPlanToUpdate.updateTitle(title);
-        trainingPlanToUpdate.updateGoal(goal);
-        trainingPlanToUpdate.updateEndDate(endDate);
+        trainingPlanToUpdate.updateTitle(dto.title());
+        trainingPlanToUpdate.updateGoal(dto.goal());
+        trainingPlanToUpdate.updateEndDate(dto.endDate());
         return repository.save(trainingPlanToUpdate);
     }
 

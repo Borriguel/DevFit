@@ -21,29 +21,39 @@ public class TrainingPlanController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TrainingPlanResponseDto createTrainingPlan(@RequestBody TrainingPlanRequestDto dto) {
-        var trainingPlan = service.createTrainingPlan(dto.title(), dto.goal(), dto.personalTrainerId(), dto.memberId());
-        return mapper.toTrainingPlanResponseDto(trainingPlan);
+        var trainingPlan = service.createTrainingPlan(dto);
+        return mapper.toSimpleDto(trainingPlan);
     }
 
     @GetMapping("/{id}")
-    public TrainingPlanResponseDto getById(@PathVariable Long id) {
-        return mapper.toTrainingPlanResponseDto(service.getById(id));
+    public TrainingPlanResponseDto getById(@PathVariable Long id, @RequestParam(required = false) String expand) {
+        boolean expandPersonal = expand != null && expand.contains("personal");
+        boolean expandMember = expand != null && expand.contains("member");
+        if (expandPersonal && expandMember) {
+            return mapper.toExpandedDto(service.getByIdWithPersonalAndMember(id));
+        } else if (expandPersonal) {
+            return mapper.toExpandedWithPersonalOnly(service.getByIdWithPersonal(id));
+        } else if (expandMember) {
+            return mapper.toExpandedWithMemberOnly(service.getByIdWithMember(id));
+        } else {
+            return mapper.toSimpleDto(service.getById(id));
+        }
     }
 
     @GetMapping("/member/{memberId}")
     public List<TrainingPlanResponseDto> getAllByMemberId(@PathVariable Long memberId) {
-        return mapper.toTrainingPlanResponseDtoList(service.getAllByMemberId(memberId));
+        return mapper.toSimpleDtoList(service.getAllByMemberId(memberId));
     }
 
     @GetMapping("/personal/{personalId}")
     public List<TrainingPlanResponseDto> getAllByPersonalId(@PathVariable Long personalId) {
-        return  mapper.toTrainingPlanResponseDtoList(service.getAllByPersonalId(personalId));
+        return  mapper.toSimpleDtoList(service.getAllByPersonalId(personalId));
     }
 
     @PutMapping("/{id}")
     public TrainingPlanResponseDto updateById(@PathVariable Long id, @RequestBody TrainingPlanUpdateRequestDto dto) {
-        var trainingPlanUpdated = service.updateById(id, dto.title(), dto.goal(), dto.endDate());
-        return mapper.toTrainingPlanResponseDto(trainingPlanUpdated);
+        var trainingPlanUpdated = service.updateById(id, dto);
+        return mapper.toSimpleDto(trainingPlanUpdated);
     }
 
     @DeleteMapping("/{id}")
