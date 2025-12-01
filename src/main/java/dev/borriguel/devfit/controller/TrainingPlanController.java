@@ -29,15 +29,10 @@ public class TrainingPlanController {
     public TrainingPlanResponseDto getById(@PathVariable Long id, @RequestParam(required = false) String expand) {
         boolean expandPersonal = expand != null && expand.contains("personal");
         boolean expandMember = expand != null && expand.contains("member");
-        if (expandPersonal && expandMember) {
-            return mapper.toExpandedDto(service.getByIdWithPersonalAndMember(id));
-        } else if (expandPersonal) {
-            return mapper.toExpandedWithPersonalOnly(service.getByIdWithPersonal(id));
-        } else if (expandMember) {
-            return mapper.toExpandedWithMemberOnly(service.getByIdWithMember(id));
-        } else {
-            return mapper.toSimpleDto(service.getById(id));
-        }
+        if (expandPersonal && expandMember) return mapper.toExpandedDto(service.getByIdWithPersonalAndMember(id));
+        if (expandPersonal) return mapper.toExpandedWithPersonalOnly(service.getByIdWithPersonal(id));
+        if (expandMember) return mapper.toExpandedWithMemberOnly(service.getByIdWithMember(id));
+        return mapper.toSimpleDto(service.getById(id));
     }
 
     @GetMapping("/member/{memberId}")
