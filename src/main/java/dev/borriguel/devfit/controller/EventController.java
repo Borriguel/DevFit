@@ -21,13 +21,15 @@ public class EventController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public EventResponseDto createEvent(@RequestBody EventRequestDto dto) {
-        var event = service.createEvent(mapper.toEvent(dto), dto.gymUnitId());
-        return mapper.toEventResponseDto(event);
+        var event = service.createEvent(dto);
+        return mapper.toSimpleDto(event);
     }
 
     @GetMapping("/{id}")
-    public EventResponseDto getById(@PathVariable Long id) {
-        return mapper.toEventResponseDto(service.getById(id));
+    public EventResponseDto getById(@PathVariable Long id, @RequestParam(required = false) String expand) {
+        boolean expandAttendees = expand != null && expand.contains("attendees");
+        if (expandAttendees) return mapper.toExpandedDto(service.getByIdWithAttendees(id));
+        return mapper.toSimpleDto(service.getById(id));
     }
 
     @GetMapping
@@ -49,7 +51,7 @@ public class EventController {
     @PutMapping("/{id}")
     public EventResponseDto updateById(@PathVariable Long id, @RequestBody EventRequestDto dto) {
         var eventUpdated = mapper.toEvent(dto);
-        return mapper.toEventResponseDto(service.updateById(id, eventUpdated));
+        return mapper.toSimpleDto(service.updateById(id, eventUpdated));
     }
 
     @PostMapping("/{id}/join/profile/{profileId}")

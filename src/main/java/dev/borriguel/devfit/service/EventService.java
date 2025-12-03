@@ -2,6 +2,7 @@ package dev.borriguel.devfit.service;
 
 import dev.borriguel.devfit.mapper.EventMapper;
 import dev.borriguel.devfit.model.Event;
+import dev.borriguel.devfit.model.dtos.EventRequestDto;
 import dev.borriguel.devfit.model.dtos.EventResponseDto;
 import dev.borriguel.devfit.repository.EventRepository;
 import jakarta.transaction.Transactional;
@@ -22,14 +23,19 @@ public class EventService {
     private final ProfileService profileService;
 
     @Transactional
-    public Event createEvent(Event event, Long gymId) {
-        var gym = gymUnitService.getById(gymId);
+    public Event createEvent(EventRequestDto dto) {
+        var gym = gymUnitService.getById(dto.gymUnitId());
+        var event = mapper.toEvent(dto);
         event.assignUnit(gym);
         return repository.save(event);
     }
 
     public Event getById(Long id) {
         return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Event not found"));
+    }
+
+    public Event getByIdWithAttendees(Long id) {
+        return repository.findByIdWithAttendees(id).orElseThrow(() -> new IllegalArgumentException("Event not found"));
     }
 
     public Page<Event> getAll(Pageable page) {

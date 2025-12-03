@@ -85,6 +85,10 @@ public class Event {
         this.date = date;
     }
 
+    public int getNumberOfAttendees() {
+        return attendees.size();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
