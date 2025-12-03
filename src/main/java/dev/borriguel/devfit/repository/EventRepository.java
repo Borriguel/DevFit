@@ -17,4 +17,12 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     @EntityGraph(attributePaths = {"attendees"})
     @Query("SELECT e FROM Event e WHERE e.id = :id")
     Optional<Event> findByIdWithAttendees(Long id);
+
+    @EntityGraph(attributePaths = {"unit"})
+    @Query("SELECT e FROM Event e WHERE e.id = :id")
+    Optional<Event> findByIdWithGymUnit(Long id);
+
+    @EntityGraph(attributePaths = {"attendees", "unit"})
+    @Query("SELECT e FROM Event e WHERE e.id = :id")
+    Optional<Event> findByIdWithAttendeesAndGymUnit(Long id);
 }

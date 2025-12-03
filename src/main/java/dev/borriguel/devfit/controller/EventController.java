@@ -28,7 +28,10 @@ public class EventController {
     @GetMapping("/{id}")
     public EventResponseDto getById(@PathVariable Long id, @RequestParam(required = false) String expand) {
         boolean expandAttendees = expand != null && expand.contains("attendees");
-        if (expandAttendees) return mapper.toExpandedDto(service.getByIdWithAttendees(id));
+        boolean expandGym = expand != null && expand.contains("unit");
+        if (expandAttendees && expandGym) return mapper.toExpandedDto(service.getByIdWithGymUnitAndAttendees(id));
+        if (expandAttendees) return mapper.toExpandedDtoWithAttendeesOnly(service.getByIdWithAttendees(id));
+        if (expandGym) return mapper.toExpandDtoWithGymUnitOnly(service.getByIdWithGymUnit(id));
         return mapper.toSimpleDto(service.getById(id));
     }
 

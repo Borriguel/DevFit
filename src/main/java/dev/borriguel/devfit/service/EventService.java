@@ -38,6 +38,14 @@ public class EventService {
         return repository.findByIdWithAttendees(id).orElseThrow(() -> new IllegalArgumentException("Event not found"));
     }
 
+    public Event getByIdWithGymUnit(Long id) {
+        return repository.findByIdWithGymUnit(id).orElseThrow(() -> new IllegalArgumentException("Event not found"));
+    }
+
+    public Event getByIdWithGymUnitAndAttendees(Long id) {
+        return repository.findByIdWithAttendeesAndGymUnit(id).orElseThrow(() -> new IllegalArgumentException("Event not found"));
+    }
+
     public Page<Event> getAll(Pageable page) {
         return repository.findAll(page);
     }
