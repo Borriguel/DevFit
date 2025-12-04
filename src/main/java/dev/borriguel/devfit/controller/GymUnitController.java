@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 
 @RestController
-@RequestMapping("/gym")
+@RequestMapping("/gym-units")
 @RequiredArgsConstructor
 public class GymUnitController {
     private final GymUnitService service;
@@ -32,7 +32,7 @@ public class GymUnitController {
         return mapper.toGymUnitResponseDto(service.getById(id));
     }
 
-    @PatchMapping("/updateMonthlyFee/{id}")
+    @PatchMapping("/update-monthly-fee/{id}")
     public GymUnitResponseDto updateMonthlyFeeById(@PathVariable Long id, @RequestBody BigDecimal newMonthlyFee) {
         var updatedGymUnit = service.updateMonthlyFeeById(id, newMonthlyFee);
         return mapper.toGymUnitResponseDto(updatedGymUnit);
@@ -53,5 +53,17 @@ public class GymUnitController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteById(@PathVariable Long id) {
         service.deleteById(id);
+    }
+
+    @PutMapping("/{destinationUnitId}/members/{memberId}/transfer")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void reassignMemberUnit(@PathVariable Long memberId, @PathVariable Long destinationUnitId) {
+        service.transferMember(memberId, destinationUnitId);
+    }
+
+    @PutMapping("/{destinationUnitId}/personal-trainers/{trainerId}/transfer")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void reassignPersonalUnit(@PathVariable Long trainerId, @PathVariable Long destinationUnitId) {
+        service.transferPersonal(trainerId, destinationUnitId);
     }
 }

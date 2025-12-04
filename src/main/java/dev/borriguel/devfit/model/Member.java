@@ -33,6 +33,12 @@ public class Member extends Profile {
         this.unit = unit;
     }
 
+    public void reassignUnit(GymUnit newUnit) {
+        if (newUnit == null) throw new IllegalArgumentException("Unit cannot be null");
+        if (this.unit == newUnit) return;
+        this.unit = newUnit;
+    }
+
     public void updateGoal(Goal goal) {
         if (goal == null) throw new IllegalArgumentException("Goal cannot be null");
         this.goal = goal;

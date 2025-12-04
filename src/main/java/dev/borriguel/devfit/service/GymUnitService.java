@@ -20,6 +20,8 @@ import java.math.BigDecimal;
 public class GymUnitService {
     private final GymUnitRepository repository;
     private final GymUnitMapper mapper;
+    private final MemberService memberService;
+    private final PersonalTrainerService personalService;
 
     @Transactional
     public GymUnit createGymUnit(GymUnit gym) {
@@ -59,5 +61,21 @@ public class GymUnitService {
         gymUnitToUpdate.updateAddress(updated.getAddress());
         gymUnitToUpdate.updateMonthlyFee(updated.getMonthlyFee());
         return repository.save(gymUnitToUpdate);
+    }
+
+    @Transactional
+    public void transferMember(Long memberId, Long destinationUnitId) {
+        var member = memberService.getById(memberId);
+        var gymUnit = getById(member.getUnit().getId());
+        var destinationUnit = getById(destinationUnitId);
+        gymUnit.transferMember(member, destinationUnit);
+    }
+
+    @Transactional
+    public void transferPersonal(Long trainerId, Long destinationUnitId) {
+        var trainer = personalService.getById(trainerId);
+        var gymUnit = getById(trainer.getUnit().getId());
+        var destinationUnit = getById(destinationUnitId);
+        gymUnit.transferPersonal(trainer, destinationUnit);
     }
 }

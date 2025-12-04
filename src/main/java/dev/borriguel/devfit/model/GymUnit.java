@@ -80,4 +80,22 @@ public class GymUnit {
         if (monthlyFee.stripTrailingZeros().scale() > 2) throw new IllegalArgumentException("Monthly fee cannot have more than 2 decimal places");
         this.monthlyFee = monthlyFee;
     }
+
+    public void transferMember(Member member, GymUnit destination) {
+        if (member == null) throw new IllegalArgumentException("Member cannot be null");
+        if (destination == null) throw new IllegalArgumentException("Destination gym unit cannot be null");
+        if (destination.equals(this)) throw new IllegalArgumentException("Destination gym unit cannot be the same as the source gym unit");
+        members.remove(member);
+        member.reassignUnit(destination);
+        destination.members.add(member);
+    }
+
+    public void transferPersonal(PersonalTrainer trainer, GymUnit destination) {
+        if (trainer == null) throw new IllegalArgumentException("Personal trainer cannot be null");
+        if (destination == null) throw new IllegalArgumentException("Destination gym unit cannot be null");
+        if (destination.equals(this)) throw new IllegalArgumentException("Destination gym unit cannot be the same as the source gym unit");
+        personalTrainers.remove(trainer);
+        trainer.reassignUnit(destination);
+        destination.personalTrainers.add(trainer);
+    }
 }

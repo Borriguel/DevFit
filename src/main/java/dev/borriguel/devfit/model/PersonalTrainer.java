@@ -29,13 +29,19 @@ public class PersonalTrainer extends Profile {
         this.unit = unit;
     }
 
+    public void reassignUnit(GymUnit newUnit) {
+        if (newUnit == null) throw new IllegalArgumentException("Gym unit cannot be null");
+        if (this.unit == newUnit) return;
+        this.unit = newUnit;
+    }
+
     public void assignTrainingPlan(TrainingPlan plan) {
         if (!plans.contains(plan)) {
             plans.add(plan);
         }
     }
 
-    public TrainingSession addSessionToPlan(TrainingPlan plan, LocalDate date) {
+    public TrainingSession addSessionToPlan(TrainingPlan plan) {
         if (plan == null) throw new IllegalArgumentException("Plan is required");
         if (!this.getPlans().contains(plan)) throw new IllegalArgumentException("Plan is not assigned to this personal trainer");
         var session = new TrainingSession();
