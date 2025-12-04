@@ -14,9 +14,9 @@ import java.util.List;
 @NoArgsConstructor
 public class Member extends Profile {
     @Enumerated(EnumType.STRING)
-    private Goal goal;
-    private BigDecimal weight;
-    private BigDecimal height;
+    private Goal goal = Goal.HEALTH;
+    private BigDecimal weight = BigDecimal.ZERO;
+    private BigDecimal height = BigDecimal.ZERO;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "unit_id", nullable = false)
     private GymUnit unit;

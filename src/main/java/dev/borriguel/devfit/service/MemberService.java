@@ -26,13 +26,17 @@ public class MemberService {
         return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Member not found"));
     }
 
+    public Member getByIdWithUnit(Long id) {
+        return repository.findByIdWithUnit(id).orElseThrow(() -> new IllegalArgumentException("Member not found"));
+    }
+
     public Page<Member> getAll(Pageable page) {
         return repository.findAll(page);
     }
 
     public Page<MemberResponseDto> getAllAsDto(Pageable page) {
         var membersPage = getAll(page);
-        var dtoList = mapper.toMemberResponseDtoPage(membersPage.getContent());
+        var dtoList = mapper.toSimpleDtoList(membersPage.getContent());
         return new PageImpl<>(dtoList, page, membersPage.getTotalElements());
     }
 

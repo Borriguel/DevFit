@@ -25,14 +25,16 @@ public class MemberController {
     }
 
     @GetMapping("/{id}")
-    public MemberResponseDto getById(@PathVariable Long id) {
-        return mapper.toMemberResponseDto(service.getById(id));
+    public MemberResponseDto getById(@PathVariable Long id, @RequestParam(required = false) String expand) {
+        boolean expandUnit = expand != null && expand.contains("unit");
+        if (expandUnit) return mapper.toExpandedDto(service.getByIdWithUnit(id));
+        return mapper.toSimpleDto(service.getById(id));
     }
 
     @PatchMapping("/updateMetrics/{id}")
     public MemberResponseDto updateMetrics(@PathVariable Long id, @RequestBody MemberUpdateMetricsDto dto) {
         var member = service.updateMetrics(id, dto.weight(), dto.height());
-        return mapper.toMemberResponseDto(member);
+        return mapper.toSimpleDto(member);
     }
 
     @PatchMapping("/goal/{id}")
