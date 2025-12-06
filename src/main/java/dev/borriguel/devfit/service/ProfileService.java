@@ -13,4 +13,8 @@ public class ProfileService {
     public Profile getById(Long id) {
         return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Profile not found"));
     }
+
+    public boolean existsByDocument(String document) {
+        return repository.existsByDocument(document);
+    }
 }

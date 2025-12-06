@@ -23,8 +23,10 @@ public class Member extends Profile {
     @OneToMany(mappedBy = "member", orphanRemoval = true)
     private List<TrainingPlan> plans = new ArrayList<>();
 
-    public Member(String name, String document) {
+    public Member(String name, String document, Goal goal, BigDecimal weight, BigDecimal height) {
         super(name, document);
+        updateGoal(goal);
+        updateMetrics(weight, height);
     }
 
     void assignUnit(GymUnit unit) {
