@@ -1,5 +1,6 @@
 package dev.borriguel.devfit.service;
 
+import dev.borriguel.devfit.exception.ResourceNotFound;
 import dev.borriguel.devfit.model.TrainingPlan;
 import dev.borriguel.devfit.model.dtos.TrainingPlanRequestDto;
 import dev.borriguel.devfit.model.dtos.TrainingPlanUpdateRequestDto;
@@ -26,19 +27,19 @@ public class TrainingPlanService {
     }
 
     public TrainingPlan getById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Training plan not found"));
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFound("Training plan not found with id: " + id));
     }
 
     public TrainingPlan getByIdWithPersonal(Long id) {
-        return repository.findByIdWithPersonal(id).orElseThrow(() -> new IllegalArgumentException("Training plan not found"));
+        return repository.findByIdWithPersonal(id).orElseThrow(() -> new ResourceNotFound("Training plan not found with id: " + id));
     }
 
     public TrainingPlan getByIdWithMember(Long id) {
-        return repository.findByIdWithMember(id).orElseThrow(() -> new IllegalArgumentException("Training plan not found"));
+        return repository.findByIdWithMember(id).orElseThrow(() -> new ResourceNotFound("Training plan not found with id: " + id));
     }
 
     public TrainingPlan getByIdWithPersonalAndMember(Long id) {
-        return repository.findByIdWithPersonalAndMember(id).orElseThrow(() -> new IllegalArgumentException("Training plan not found"));
+        return repository.findByIdWithPersonalAndMember(id).orElseThrow(() -> new ResourceNotFound("Training plan not found with id: " + id));
     }
 
     public List<TrainingPlan> getAllByMemberId(Long memberId) {

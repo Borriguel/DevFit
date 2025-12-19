@@ -1,5 +1,6 @@
 package dev.borriguel.devfit.service;
 
+import dev.borriguel.devfit.exception.ResourceNotFound;
 import dev.borriguel.devfit.model.Profile;
 import dev.borriguel.devfit.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,7 @@ public class ProfileService {
     private final ProfileRepository repository;
 
     public Profile getById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Profile not found"));
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFound("Profile not found with id: " + id));
     }
 
     public boolean existsByDocument(String document) {

@@ -1,5 +1,6 @@
 package dev.borriguel.devfit.service;
 
+import dev.borriguel.devfit.exception.ResourceNotFound;
 import dev.borriguel.devfit.mapper.GymUnitMapper;
 import dev.borriguel.devfit.model.GymUnit;
 import dev.borriguel.devfit.model.dtos.GymUnitResponseDto;
@@ -29,7 +30,7 @@ public class GymUnitService {
     }
 
     public GymUnit getById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Gym unit not found"));
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFound("Gym unit not found with id: " + id));
     }
 
     public Page<GymUnit> getAll(Pageable page) {

@@ -1,5 +1,6 @@
 package dev.borriguel.devfit.service;
 
+import dev.borriguel.devfit.exception.ResourceNotFound;
 import dev.borriguel.devfit.mapper.PersonalTrainerMapper;
 import dev.borriguel.devfit.model.PersonalTrainer;
 import dev.borriguel.devfit.model.dtos.PersonalTrainerResponseDto;
@@ -17,11 +18,11 @@ public class PersonalTrainerService {
     private final PersonalTrainerMapper mapper;
 
     public PersonalTrainer getById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Personal trainer not found"));
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFound("Personal trainer not found with id: " + id));
     }
 
     public PersonalTrainer getByIdWithUnit(Long id) {
-        return repository.findByIdWithUnit(id).orElseThrow(() -> new IllegalArgumentException("Personal trainer not found"));
+        return repository.findByIdWithUnit(id).orElseThrow(() -> new ResourceNotFound("Personal trainer not found with id: " + id));
     }
 
     public Page<PersonalTrainer> getAllByUnitId(Long unitId, Pageable page) {

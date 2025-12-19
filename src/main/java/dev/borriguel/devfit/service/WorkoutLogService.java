@@ -1,5 +1,6 @@
 package dev.borriguel.devfit.service;
 
+import dev.borriguel.devfit.exception.ResourceNotFound;
 import dev.borriguel.devfit.model.WorkoutLog;
 import dev.borriguel.devfit.repository.WorkoutLogRepository;
 import jakarta.transaction.Transactional;
@@ -21,11 +22,11 @@ public class WorkoutLogService {
     }
 
     public WorkoutLog getById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Workout log not found"));
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFound("Workout log not found with id: " + id));
     }
 
     public WorkoutLog getByIdWithSession(Long id) {
-        return repository.findByIdWithSession(id).orElseThrow(() -> new IllegalArgumentException("Workout log not found"));
+        return repository.findByIdWithSession(id).orElseThrow(() -> new ResourceNotFound("Workout log not found with id: " + id));
     }
 
     @Transactional

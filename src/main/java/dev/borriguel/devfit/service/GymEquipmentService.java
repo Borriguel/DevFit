@@ -1,5 +1,6 @@
 package dev.borriguel.devfit.service;
 
+import dev.borriguel.devfit.exception.ResourceNotFound;
 import dev.borriguel.devfit.model.Category;
 import dev.borriguel.devfit.model.GymEquipment;
 import dev.borriguel.devfit.repository.GymEquipmentRepository;
@@ -22,7 +23,7 @@ public class GymEquipmentService {
     }
 
     public GymEquipment getById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Gym equipment not found"));
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFound("Gym equipment not found with id: " + id + ""));
     }
 
     @Transactional

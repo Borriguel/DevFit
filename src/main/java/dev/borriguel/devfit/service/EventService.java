@@ -1,5 +1,6 @@
 package dev.borriguel.devfit.service;
 
+import dev.borriguel.devfit.exception.ResourceNotFound;
 import dev.borriguel.devfit.mapper.EventMapper;
 import dev.borriguel.devfit.model.Event;
 import dev.borriguel.devfit.model.dtos.EventRequestDto;
@@ -31,19 +32,19 @@ public class EventService {
     }
 
     public Event getById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Event not found"));
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFound("Event not found with id: " + id));
     }
 
     public Event getByIdWithAttendees(Long id) {
-        return repository.findByIdWithAttendees(id).orElseThrow(() -> new IllegalArgumentException("Event not found"));
+        return repository.findByIdWithAttendees(id).orElseThrow(() -> new ResourceNotFound("Event not found with id: " + id));
     }
 
     public Event getByIdWithGymUnit(Long id) {
-        return repository.findByIdWithGymUnit(id).orElseThrow(() -> new IllegalArgumentException("Event not found"));
+        return repository.findByIdWithGymUnit(id).orElseThrow(() -> new ResourceNotFound("Event not found with id: " + id));
     }
 
     public Event getByIdWithGymUnitAndAttendees(Long id) {
-        return repository.findByIdWithAttendeesAndGymUnit(id).orElseThrow(() -> new IllegalArgumentException("Event not found"));
+        return repository.findByIdWithAttendeesAndGymUnit(id).orElseThrow(() -> new ResourceNotFound("Event not found with id: " + id));
     }
 
     public Page<Event> getAll(Pageable page) {

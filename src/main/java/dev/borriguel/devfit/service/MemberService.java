@@ -1,5 +1,6 @@
 package dev.borriguel.devfit.service;
 
+import dev.borriguel.devfit.exception.ResourceNotFound;
 import dev.borriguel.devfit.mapper.MemberMapper;
 import dev.borriguel.devfit.model.Goal;
 import dev.borriguel.devfit.model.Member;
@@ -23,11 +24,11 @@ public class MemberService {
     private final MemberMapper mapper;
 
     public Member getById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Member not found"));
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFound("Member not found with id: " + id));
     }
 
     public Member getByIdWithUnit(Long id) {
-        return repository.findByIdWithUnit(id).orElseThrow(() -> new IllegalArgumentException("Member not found"));
+        return repository.findByIdWithUnit(id).orElseThrow(() -> new ResourceNotFound("Member not found with id: " + id));
     }
 
     public Page<Member> getAll(Pageable page) {

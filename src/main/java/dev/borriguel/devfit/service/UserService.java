@@ -1,5 +1,6 @@
 package dev.borriguel.devfit.service;
 
+import dev.borriguel.devfit.exception.ResourceNotFound;
 import dev.borriguel.devfit.mapper.UserMapper;
 import dev.borriguel.devfit.model.User;
 import dev.borriguel.devfit.model.dtos.UserResponseDto;
@@ -20,7 +21,7 @@ public class UserService {
     private final UserMapper mapper;
 
     public User getById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFound("User not found with id: " + id));
     }
 
     public Page<User> getAll(Pageable page) {
