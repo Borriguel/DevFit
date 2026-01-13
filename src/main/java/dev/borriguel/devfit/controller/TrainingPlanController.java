@@ -5,6 +5,7 @@ import dev.borriguel.devfit.model.dtos.TrainingPlanRequestDto;
 import dev.borriguel.devfit.model.dtos.TrainingPlanResponseDto;
 import dev.borriguel.devfit.model.dtos.TrainingPlanUpdateRequestDto;
 import dev.borriguel.devfit.service.TrainingPlanService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class TrainingPlanController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TrainingPlanResponseDto createTrainingPlan(@RequestBody TrainingPlanRequestDto dto) {
+    public TrainingPlanResponseDto createTrainingPlan(@RequestBody @Valid TrainingPlanRequestDto dto) {
         var trainingPlan = service.createTrainingPlan(dto);
         return mapper.toSimpleDto(trainingPlan);
     }
@@ -46,7 +47,7 @@ public class TrainingPlanController {
     }
 
     @PutMapping("/{id}")
-    public TrainingPlanResponseDto updateById(@PathVariable Long id, @RequestBody TrainingPlanUpdateRequestDto dto) {
+    public TrainingPlanResponseDto updateById(@PathVariable Long id, @RequestBody @Valid TrainingPlanUpdateRequestDto dto) {
         var trainingPlanUpdated = service.updateById(id, dto);
         return mapper.toSimpleDto(trainingPlanUpdated);
     }

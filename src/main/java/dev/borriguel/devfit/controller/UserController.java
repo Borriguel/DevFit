@@ -4,6 +4,7 @@ import dev.borriguel.devfit.mapper.UserMapper;
 import dev.borriguel.devfit.model.dtos.UserResponseDto;
 import dev.borriguel.devfit.model.dtos.UserUpdateRequestDto;
 import dev.borriguel.devfit.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -35,7 +36,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public UserResponseDto updateById(@PathVariable Long id, @RequestBody UserUpdateRequestDto dto) {
+    public UserResponseDto updateById(@PathVariable Long id, @RequestBody @Valid UserUpdateRequestDto dto) {
         var updatedUser = service.updateById(id, mapper.toUser(dto));
         return mapper.toUserResponseDto(updatedUser);
     }

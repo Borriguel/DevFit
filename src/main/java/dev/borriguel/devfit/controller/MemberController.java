@@ -5,6 +5,7 @@ import dev.borriguel.devfit.model.Goal;
 import dev.borriguel.devfit.model.dtos.MemberResponseDto;
 import dev.borriguel.devfit.model.dtos.MemberUpdateMetricsDto;
 import dev.borriguel.devfit.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -32,7 +33,7 @@ public class MemberController {
     }
 
     @PatchMapping("/updateMetrics/{id}")
-    public MemberResponseDto updateMetrics(@PathVariable Long id, @RequestBody MemberUpdateMetricsDto dto) {
+    public MemberResponseDto updateMetrics(@PathVariable Long id, @RequestBody @Valid MemberUpdateMetricsDto dto) {
         var member = service.updateMetrics(id, dto.weight(), dto.height());
         return mapper.toSimpleDto(member);
     }

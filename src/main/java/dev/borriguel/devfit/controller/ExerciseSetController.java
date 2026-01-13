@@ -4,6 +4,7 @@ import dev.borriguel.devfit.mapper.ExerciseSetMapper;
 import dev.borriguel.devfit.model.dtos.ExerciseSetRequestDto;
 import dev.borriguel.devfit.model.dtos.ExerciseSetResponseDto;
 import dev.borriguel.devfit.service.ExerciseSetService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class ExerciseSetController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ExerciseSetResponseDto createExerciseSet(@RequestBody ExerciseSetRequestDto dto) {
+    public ExerciseSetResponseDto createExerciseSet(@RequestBody @Valid ExerciseSetRequestDto dto) {
         return mapper.toSimpleDto(service.createExerciseSet(dto));
     }
 

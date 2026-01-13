@@ -5,6 +5,7 @@ import dev.borriguel.devfit.model.Category;
 import dev.borriguel.devfit.model.dtos.GymEquipmentRequestDto;
 import dev.borriguel.devfit.model.dtos.GymEquipmentResponseDto;
 import dev.borriguel.devfit.service.GymEquipmentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class GymEquipmentController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public GymEquipmentResponseDto createGymEquipment(@RequestBody GymEquipmentRequestDto dto) {
+    public GymEquipmentResponseDto createGymEquipment(@RequestBody @Valid GymEquipmentRequestDto dto) {
         var equipment = service.createGymEquipment(mapper.toGymEquipment(dto));
         return mapper.toGymEquipmentResponseDto(equipment);
     }
@@ -42,7 +43,7 @@ public class GymEquipmentController {
     }
 
     @PutMapping("/{id}")
-    public GymEquipmentResponseDto updateById(@PathVariable Long id, @RequestBody GymEquipmentRequestDto dto) {
+    public GymEquipmentResponseDto updateById(@PathVariable Long id, @RequestBody @Valid GymEquipmentRequestDto dto) {
         var updatedEquipment = service.updateById(id, mapper.toGymEquipment(dto));
         return mapper.toGymEquipmentResponseDto(updatedEquipment);
     }

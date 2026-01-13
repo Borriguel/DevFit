@@ -4,6 +4,7 @@ import dev.borriguel.devfit.mapper.EventMapper;
 import dev.borriguel.devfit.model.dtos.EventRequestDto;
 import dev.borriguel.devfit.model.dtos.EventResponseDto;
 import dev.borriguel.devfit.service.EventService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -20,7 +21,7 @@ public class EventController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public EventResponseDto createEvent(@RequestBody EventRequestDto dto) {
+    public EventResponseDto createEvent(@RequestBody @Valid EventRequestDto dto) {
         var event = service.createEvent(dto);
         return mapper.toSimpleDto(event);
     }
@@ -52,7 +53,7 @@ public class EventController {
     }
 
     @PutMapping("/{id}")
-    public EventResponseDto updateById(@PathVariable Long id, @RequestBody EventRequestDto dto) {
+    public EventResponseDto updateById(@PathVariable Long id, @RequestBody @Valid EventRequestDto dto) {
         var eventUpdated = mapper.toEvent(dto);
         return mapper.toSimpleDto(service.updateById(id, eventUpdated));
     }

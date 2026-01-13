@@ -4,6 +4,7 @@ import dev.borriguel.devfit.mapper.GymUnitMapper;
 import dev.borriguel.devfit.model.dtos.GymUnitRequestDto;
 import dev.borriguel.devfit.model.dtos.GymUnitResponseDto;
 import dev.borriguel.devfit.service.GymUnitService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -22,7 +23,7 @@ public class GymUnitController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public GymUnitResponseDto createGymUnit(@RequestBody GymUnitRequestDto dto) {
+    public GymUnitResponseDto createGymUnit(@RequestBody @Valid GymUnitRequestDto dto) {
         var gym = service.createGymUnit(mapper.toGymUnit(dto));
         return mapper.toGymUnitResponseDto(gym);
     }
@@ -39,7 +40,7 @@ public class GymUnitController {
     }
 
     @PutMapping("/{id}")
-    public GymUnitResponseDto updateById(@PathVariable Long id, @RequestBody GymUnitRequestDto dto) {
+    public GymUnitResponseDto updateById(@PathVariable Long id, @RequestBody @Valid GymUnitRequestDto dto) {
         var updatedGymUnit = service.updateById(id, mapper.toGymUnit(dto));
         return mapper.toGymUnitResponseDto(updatedGymUnit);
     }
