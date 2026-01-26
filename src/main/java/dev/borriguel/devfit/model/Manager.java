@@ -1,6 +1,8 @@
 package dev.borriguel.devfit.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.borriguel.devfit.exception.BusinessRuleException;
+import dev.borriguel.devfit.exception.ValidationException;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -23,8 +25,12 @@ public class Manager extends Profile {
     }
 
     public void assignUnit(GymUnit unit) {
-        if (this.unit != null) throw new IllegalStateException("Manager already assigned to a gym unit");
-        if (unit == null) throw new IllegalArgumentException("Unit cannot be null");
+        if (this.unit != null) throw new BusinessRuleException("Manager already assigned to a gym unit");
+        if (unit == null) throw new ValidationException("Unit cannot be null");
         this.unit = unit;
+    }
+
+    public void unassignUnit() {
+        this.unit = null;
     }
 }

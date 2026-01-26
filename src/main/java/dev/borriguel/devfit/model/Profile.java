@@ -1,5 +1,7 @@
 package dev.borriguel.devfit.model;
 
+import dev.borriguel.devfit.exception.BusinessRuleException;
+import dev.borriguel.devfit.exception.ValidationException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -30,25 +32,25 @@ public abstract class Profile {
     }
 
     public void assignUser(User user) {
-        if (user == null) throw new IllegalArgumentException("User cannot be null");
-        if (this.user != null) throw new IllegalStateException("Profile already assigned to another user");
+        if (user == null) throw new ValidationException("User cannot be null");
+        if (this.user != null) throw new BusinessRuleException("Profile already assigned to another user");
         this.user = user;
     }
 
     public void updateName(String name) {
-        if (name == null) throw new IllegalArgumentException("Name cannot be null");
-        if (name.isBlank()) throw new IllegalArgumentException("Name cannot be blank");
-        if (name.length() < 3) throw new IllegalArgumentException("Name must be at least 3 characters long");
-        if (name.length() > 50) throw new IllegalArgumentException("Name cannot be longer than 50 characters");
+        if (name == null) throw new ValidationException("Name cannot be null");
+        if (name.isBlank()) throw new ValidationException("Name cannot be blank");
+        if (name.length() < 3) throw new ValidationException("Name must be at least 3 characters long");
+        if (name.length() > 50) throw new ValidationException("Name cannot be longer than 50 characters");
         this.name = name;
     }
 
     public void updateDocument(String document) {
-        if (document == null) throw new IllegalArgumentException("Document cannot be null");
-        if (document.isBlank()) throw new IllegalArgumentException("Document cannot be blank");
-        if (document.length() < 11) throw new IllegalArgumentException("Document must be at least 11 characters long");
-        if (document.length() > 11) throw new IllegalArgumentException("Document cannot be longer than 11 characters");
-        if (!document.matches("^[0-9]{11}$")) throw new IllegalArgumentException("Invalid document format");
+        if (document == null) throw new ValidationException("Document cannot be null");
+        if (document.isBlank()) throw new ValidationException("Document cannot be blank");
+        if (document.length() < 11) throw new ValidationException("Document must be at least 11 characters long");
+        if (document.length() > 11) throw new ValidationException("Document cannot be longer than 11 characters");
+        if (!document.matches("^[0-9]{11}$")) throw new ValidationException("Invalid document format");
         this.document = document;
     }
 

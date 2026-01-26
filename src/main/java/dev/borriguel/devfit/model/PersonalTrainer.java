@@ -1,5 +1,7 @@
 package dev.borriguel.devfit.model;
 
+import dev.borriguel.devfit.exception.BusinessRuleException;
+import dev.borriguel.devfit.exception.ValidationException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,13 +26,13 @@ public class PersonalTrainer extends Profile {
     }
 
     public void assignUnit(GymUnit unit) {
-        if (this.unit != null) throw new IllegalStateException("Personal trainer already assigned to a gym unit");
-        if (unit == null) throw new IllegalArgumentException("Gym unit cannot be null");
+        if (this.unit != null) throw new BusinessRuleException("Personal trainer already assigned to a gym unit");
+        if (unit == null) throw new ValidationException("Gym unit cannot be null");
         this.unit = unit;
     }
 
     public void reassignUnit(GymUnit newUnit) {
-        if (newUnit == null) throw new IllegalArgumentException("Gym unit cannot be null");
+        if (newUnit == null) throw new ValidationException("Gym unit cannot be null");
         if (this.unit == newUnit) return;
         this.unit = newUnit;
     }
@@ -42,8 +44,8 @@ public class PersonalTrainer extends Profile {
     }
 
     public TrainingSession addSessionToPlan(TrainingPlan plan) {
-        if (plan == null) throw new IllegalArgumentException("Plan is required");
-        if (!this.getPlans().contains(plan)) throw new IllegalArgumentException("Plan is not assigned to this personal trainer");
+        if (plan == null) throw new ValidationException("Plan is required");
+        if (!this.getPlans().contains(plan)) throw new ValidationException("Plan is not assigned to this personal trainer");
         var session = new TrainingSession();
         plan.assignSession(session);
         return session;

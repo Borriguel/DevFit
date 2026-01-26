@@ -1,5 +1,7 @@
 package dev.borriguel.devfit.model;
 
+import dev.borriguel.devfit.exception.BusinessRuleException;
+import dev.borriguel.devfit.exception.ValidationException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,27 +32,27 @@ public class Member extends Profile {
     }
 
     void assignUnit(GymUnit unit) {
-        if (this.unit != null) throw new IllegalStateException("Member already assigned to a gym unit");
-        if (unit == null) throw new IllegalArgumentException("Unit cannot be null");
+        if (this.unit != null) throw new BusinessRuleException("Member already assigned to a gym unit");
+        if (unit == null) throw new ValidationException("Unit cannot be null");
         this.unit = unit;
     }
 
     public void reassignUnit(GymUnit newUnit) {
-        if (newUnit == null) throw new IllegalArgumentException("Unit cannot be null");
+        if (newUnit == null) throw new ValidationException("Unit cannot be null");
         if (this.unit == newUnit) return;
         this.unit = newUnit;
     }
 
     public void updateGoal(Goal goal) {
-        if (goal == null) throw new IllegalArgumentException("Goal cannot be null");
+        if (goal == null) throw new ValidationException("Goal cannot be null");
         this.goal = goal;
     }
 
     public void updateMetrics(BigDecimal weight, BigDecimal height) {
-        if (weight.compareTo(BigDecimal.ZERO) < 0) throw new IllegalArgumentException("Weight cannot be negative");
-        if (height.compareTo(BigDecimal.ZERO) < 0) throw new IllegalArgumentException("Height cannot be negative");
-        if (weight.stripTrailingZeros().scale() > 2) throw new IllegalArgumentException("Weight cannot have more than 2 decimal places");
-        if (height.stripTrailingZeros().scale() > 2) throw new IllegalArgumentException("Height cannot have more than 2 decimal places");
+        if (weight.compareTo(BigDecimal.ZERO) < 0) throw new ValidationException("Weight cannot be negative");
+        if (height.compareTo(BigDecimal.ZERO) < 0) throw new ValidationException("Height cannot be negative");
+        if (weight.stripTrailingZeros().scale() > 2) throw new ValidationException("Weight cannot have more than 2 decimal places");
+        if (height.stripTrailingZeros().scale() > 2) throw new ValidationException("Height cannot have more than 2 decimal places");
         this.weight = weight;
         this.height = height;
     }
@@ -59,12 +61,5 @@ public class Member extends Profile {
         if (!plans.contains(plan)) {
             plans.add(plan);
         }
-    }
-
-    public TrainingPlan requestTrainingPlan(PersonalTrainer personalTrainer, String title) {
-        if (personalTrainer == null) throw new IllegalArgumentException("Personal trainer cannot be null");
-        if (!this.getUnit().equals(personalTrainer.getUnit())) throw new IllegalArgumentException("Personal trainer must be assigned to the same gym unit");
-        if (this.getGoal() == null) throw new IllegalStateException("Member must have a goal");
-        return new TrainingPlan(title, this.getGoal(), personalTrainer, this);
     }
 }

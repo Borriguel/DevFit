@@ -1,5 +1,7 @@
 package dev.borriguel.devfit.model;
 
+import dev.borriguel.devfit.exception.BusinessRuleException;
+import dev.borriguel.devfit.exception.ValidationException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,22 +27,22 @@ public class TrainingSession {
     private List<WorkoutLog> logs = new ArrayList<>();
 
     public void assignPlan(TrainingPlan trainingPlan, PersonalTrainer personal) {
-        if (this.trainingPlan != null) throw new IllegalStateException("Training session already assigned to a training plan");
-        if (trainingPlan == null) throw new IllegalArgumentException("Training plan cannot be null");
-        if (trainingPlan.getPersonal() != personal) throw new IllegalArgumentException("Training plan not assigned to personal trainer");
+        if (this.trainingPlan != null) throw new BusinessRuleException("Training session already assigned to a training plan");
+        if (trainingPlan == null) throw new ValidationException("Training plan cannot be null");
+        if (trainingPlan.getPersonal() != personal) throw new ValidationException("Training plan not assigned to personal trainer");
         this.trainingPlan = trainingPlan;
         trainingPlan.assignSession(this);
     }
 
     public void addExercise(ExerciseSet exercise) {
-        if (exercise == null) throw new IllegalArgumentException("Exercise cannot be null");
-        if (exercises.contains(exercise)) throw new IllegalArgumentException("Exercise already assigned to this session");
+        if (exercise == null) throw new ValidationException("Exercise cannot be null");
+        if (exercises.contains(exercise)) throw new ValidationException("Exercise already assigned to this session");
         exercises.add(exercise);
     }
 
     public void addToLog(WorkoutLog log) {
-        if (log == null) throw new IllegalArgumentException("Log cannot be null");
-        if (log.getPerformedOn() == null) throw new IllegalArgumentException("Log performed on date cannot be null");
+        if (log == null) throw new ValidationException("Log cannot be null");
+        if (log.getPerformedOn() == null) throw new ValidationException("Log performed on date cannot be null");
         logs.add(log);
     }
 

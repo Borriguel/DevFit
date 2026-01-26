@@ -1,5 +1,7 @@
 package dev.borriguel.devfit.model;
 
+import dev.borriguel.devfit.exception.BusinessRuleException;
+import dev.borriguel.devfit.exception.ValidationException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,9 +35,9 @@ public class TrainingPlan {
     private List<TrainingSession> sessions = new ArrayList<>();
 
     public TrainingPlan(String title, Goal goal, PersonalTrainer personal, Member member) {
-        if (personal == null || member == null) throw new IllegalArgumentException("Personal and member are required");
-        if (personal.getUnit() != member.getUnit()) throw new IllegalArgumentException("Personal and member must be assigned to the same gym unit");
-        if (goal == null) throw new IllegalArgumentException("Goal cannot be null");
+        if (personal == null || member == null) throw new ValidationException("Personal and member are required");
+        if (personal.getUnit() != member.getUnit()) throw new BusinessRuleException("Personal and member must be assigned to the same gym unit");
+        if (goal == null) throw new ValidationException("Goal cannot be null");
         updateTitle(title);
         updateGoal(goal);
         this.personal = personal;
@@ -45,26 +47,26 @@ public class TrainingPlan {
     }
 
     public void assignSession(TrainingSession session) {
-        if (session == null) throw new IllegalArgumentException("Session cannot be null");
-        if (sessions.contains(session)) throw new IllegalArgumentException("Session already assigned to this plan");
+        if (session == null) throw new ValidationException("Session cannot be null");
+        if (sessions.contains(session)) throw new ValidationException("Session already assigned to this plan");
         sessions.add(session);
     }
 
     public void updateTitle(String title) {
-        if (title.isBlank()) throw new IllegalArgumentException("Title cannot be blank");
-        if (title.length() < 3) throw new IllegalArgumentException("Title must be at least 3 characters long");
-        if (title.length() > 20) throw new IllegalArgumentException("Title cannot be longer than 20 characters");
+        if (title.isBlank()) throw new ValidationException("Title cannot be blank");
+        if (title.length() < 3) throw new ValidationException("Title must be at least 3 characters long");
+        if (title.length() > 20) throw new ValidationException("Title cannot be longer than 20 characters");
         this.title = title;
     }
 
     public void updateGoal(Goal goal) {
-        if (goal == null) throw new IllegalArgumentException("Goal cannot be null");
+        if (goal == null) throw new ValidationException("Goal cannot be null");
         this.goal = goal;
     }
 
     public void updateEndDate(LocalDate endDate) {
-        if (endDate == null) throw new IllegalArgumentException("End date cannot be null");
-        if (endDate.isBefore(startDate)) throw new IllegalArgumentException("End date cannot be before start date");
+        if (endDate == null) throw new ValidationException("End date cannot be null");
+        if (endDate.isBefore(startDate)) throw new ValidationException("End date cannot be before start date");
         this.endDate = endDate;
     }
 

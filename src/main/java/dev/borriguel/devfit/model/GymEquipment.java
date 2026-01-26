@@ -1,5 +1,6 @@
 package dev.borriguel.devfit.model;
 
+import dev.borriguel.devfit.exception.ValidationException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,30 +28,30 @@ public class GymEquipment {
     }
 
     public void updateName(String name) {
-        if (name == null) throw new IllegalArgumentException("Name cannot be null");
-        if (name.isBlank()) throw new IllegalArgumentException("Name cannot be blank");
-        if (name.length() < 3) throw new IllegalArgumentException("Name must be at least 3 characters long");
-        if (name.length() > 20) throw new IllegalArgumentException("Name cannot be longer than 20 characters");
+        if (name == null) throw new ValidationException("Name cannot be null");
+        if (name.isBlank()) throw new ValidationException("Name cannot be blank");
+        if (name.length() < 3) throw new ValidationException("Name must be at least 3 characters long");
+        if (name.length() > 20) throw new ValidationException("Name cannot be longer than 20 characters");
         this.name = name;
     }
 
     public void updateDescription(String description) {
-        if (description == null) throw new IllegalArgumentException("Description cannot be null");
-        if (description.isBlank()) throw new IllegalArgumentException("Description cannot be blank");
-        if (description.length() > 255) throw new IllegalArgumentException("Description cannot be longer than 255 characters");
+        if (description == null) throw new ValidationException("Description cannot be null");
+        if (description.isBlank()) throw new ValidationException("Description cannot be blank");
+        if (description.length() > 255) throw new ValidationException("Description cannot be longer than 255 characters");
         this.description = description;
     }
 
     public void updateImage(String imageUrl) {
-        if (imageUrl == null) throw new IllegalArgumentException("Image cannot be null");
-        if (imageUrl.isBlank()) throw new IllegalArgumentException("Image cannot be blank");
-        if (imageUrl.length() > 255) throw new IllegalArgumentException("Image cannot be longer than 255 characters");
+        if (imageUrl == null) throw new ValidationException("Image cannot be null");
+        if (imageUrl.isBlank()) throw new ValidationException("Image cannot be blank");
+        if (imageUrl.length() > 255) throw new ValidationException("Image cannot be longer than 255 characters");
         this.imageUrl = imageUrl;
     }
 
     public void updateCategory(Category category) {
-        if (category == null) throw new IllegalArgumentException("Category cannot be null");
-        if (this.category == category) throw new IllegalArgumentException("Category already assigned to this equipment");
+        if (category == null) throw new ValidationException("Category cannot be null");
+        if (this.category == category) throw new ValidationException("Category already assigned to this equipment");
         this.category = category;
     }
 }

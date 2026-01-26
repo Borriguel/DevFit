@@ -1,5 +1,7 @@
 package dev.borriguel.devfit.model;
 
+import dev.borriguel.devfit.exception.BusinessRuleException;
+import dev.borriguel.devfit.exception.ValidationException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,24 +32,24 @@ public class ExerciseSet {
     }
 
     public void assignSession(TrainingSession session) {
-        if (this.session != null) throw new IllegalStateException("Exercise set already assigned to a training session");
-        if (session == null) throw new IllegalArgumentException("Session cannot be null");
+        if (this.session != null) throw new BusinessRuleException("Exercise set already assigned to a training session");
+        if (session == null) throw new ValidationException("Session cannot be null");
         this.session = session;
         session.addExercise(this);
     }
 
     public void assignEquipment(GymEquipment equipment) {
-        if (equipment == null) throw new IllegalArgumentException("Equipment cannot be null");
+        if (equipment == null) throw new ValidationException("Equipment cannot be null");
         this.equipment = equipment;
     }
 
     public void updateReps(int reps) {
-        if (reps < 0) throw new IllegalArgumentException("Reps cannot be negative");
+        if (reps < 0) throw new ValidationException("Reps cannot be negative");
         this.reps = reps;
     }
 
     public void updateSets(int sets) {
-        if (sets < 0) throw new IllegalArgumentException("Sets cannot be negative");
+        if (sets < 0) throw new ValidationException("Sets cannot be negative");
         this.sets = sets;
     }
 
