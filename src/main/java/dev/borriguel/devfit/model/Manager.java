@@ -1,12 +1,8 @@
 package dev.borriguel.devfit.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.borriguel.devfit.exception.BusinessRuleException;
 import dev.borriguel.devfit.exception.ValidationException;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,9 +11,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class Manager extends Profile {
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "unit_id", unique = true)
-    @JsonIgnore
     private GymUnit unit;
 
     public Manager(String name, String document) {
