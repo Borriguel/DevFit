@@ -67,4 +67,16 @@ public class GymUnitController {
     public void reassignPersonalUnit(@PathVariable Long trainerId, @PathVariable Long destinationUnitId) {
         service.transferPersonal(trainerId, destinationUnitId);
     }
+
+    @DeleteMapping("/managers/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeManager(@PathVariable Long id) {
+        service.removeManager(id);
+    }
+
+    @PatchMapping("{destinationUnitId}/managers/{managerId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateManager(@PathVariable Long destinationUnitId, @PathVariable Long managerId) {
+        service.assignManager(destinationUnitId, managerId);
+    }
 }

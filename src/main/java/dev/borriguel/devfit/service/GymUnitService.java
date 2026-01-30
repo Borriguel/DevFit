@@ -23,6 +23,7 @@ public class GymUnitService {
     private final GymUnitMapper mapper;
     private final MemberService memberService;
     private final PersonalTrainerService personalService;
+    private final ManagerService managerService;
 
     @Transactional
     public GymUnit createGymUnit(GymUnit gym) {
@@ -50,6 +51,7 @@ public class GymUnitService {
         return new PageImpl<>(dtoList, page, gymUnits.getTotalElements());
     }
 
+    @Transactional
     public void deleteById(Long id) {
         var gymUnit = getById(id);
         repository.delete(gymUnit);
@@ -78,5 +80,18 @@ public class GymUnitService {
         var gymUnit = getById(trainer.getUnit().getId());
         var destinationUnit = getById(destinationUnitId);
         gymUnit.transferPersonal(trainer, destinationUnit);
+    }
+
+    @Transactional
+    public void removeManager(Long id) {
+        var gymUnit = getById(id);
+        gymUnit.removeManager();
+    }
+
+    @Transactional
+    public void assignManager(Long destinationId, Long managerId) {
+        var gymUnit = getById(destinationId);
+        var manager = managerService.getById(managerId);
+        gymUnit.assignManager(manager);
     }
 }
