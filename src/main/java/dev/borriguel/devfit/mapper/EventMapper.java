@@ -5,8 +5,6 @@ import dev.borriguel.devfit.model.dtos.EventRequestDto;
 import dev.borriguel.devfit.model.dtos.EventResponseDto;
 import org.mapstruct.*;
 
-import java.util.List;
-
 @Mapper(componentModel = "spring")
 public interface EventMapper {
     @Named("simpleMapping")
@@ -29,9 +27,6 @@ public interface EventMapper {
     @Mapping(target = "unit", ignore = true)
     @Mapping(target = "unitId", source = "unit.id")
     EventResponseDto toExpandedDtoWithAttendeesOnly(Event event);
-
-    @IterableMapping(qualifiedByName = "simpleMapping")
-    List<EventResponseDto> toEventResponseDtoPage(List<Event> events);
 
     @ObjectFactory
     default Event toEvent(EventRequestDto dto) {

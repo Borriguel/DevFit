@@ -10,7 +10,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -47,24 +46,12 @@ public class EventService {
         return repository.findByIdWithAttendeesAndGymUnit(id).orElseThrow(() -> new ResourceNotFound("Event not found with id: " + id));
     }
 
-    public Page<Event> getAll(Pageable page) {
-        return repository.findAll(page);
-    }
-
-    public Page<Event> getAllByGymId(Long gymId, Pageable page) {
-        return repository.findByUnit_Id(gymId, page);
-    }
-
     public Page<EventResponseDto> getAllAsDto(Pageable page) {
-        var eventsPage = getAll(page);
-        var dtoList = mapper.toEventResponseDtoPage(eventsPage.getContent());
-        return new PageImpl<>(dtoList, page, eventsPage.getTotalElements());
+        return repository.findAllAsDto(page);
     }
 
     public Page<EventResponseDto> getAllByGymIdAsDto(Long gymId, Pageable page) {
-        var eventsPage = getAllByGymId(gymId, page);
-        var dtoList = mapper.toEventResponseDtoPage(eventsPage.getContent());
-        return new PageImpl<>(dtoList, page, eventsPage.getTotalElements());
+        return repository.findByUnitIdAsDto(gymId, page);
     }
 
     @Transactional
