@@ -1,5 +1,6 @@
 package dev.borriguel.devfit.service;
 
+import dev.borriguel.devfit.exception.ValidationException;
 import dev.borriguel.devfit.model.*;
 import dev.borriguel.devfit.model.dtos.ManagerRegistrationDto;
 import dev.borriguel.devfit.model.dtos.MemberRegistrationDto;
@@ -55,10 +56,10 @@ public class RegistrationService {
     }
 
     private void validateUniqueEmail(String email) {
-        if (repository.existsByEmail(email)) throw new IllegalArgumentException("User already registered");
+        if (repository.existsByEmail(email)) throw new ValidationException("User already registered");
     }
 
     private void validateUniqueProfileDocument(String document) {
-        if (profileService.existsByDocument(document)) throw new IllegalArgumentException("Profile already registered");
+        if (profileService.existsByDocument(document)) throw new ValidationException("Profile already registered");
     }
 }
