@@ -4,6 +4,7 @@ import dev.borriguel.devfit.exception.ValidationException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Objects;
 
@@ -35,7 +36,7 @@ public class User {
         if (password == null) throw new ValidationException("Password cannot be null");
         if (password.isBlank()) throw new ValidationException("Password cannot be blank");
         if (password.length() < 8) throw new ValidationException("Password must be at least 8 characters long");
-        this.password = password;
+        this.password = new BCryptPasswordEncoder().encode(password);
     }
 
     public void updateEmail(String email) {

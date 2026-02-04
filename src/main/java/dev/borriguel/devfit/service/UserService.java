@@ -4,6 +4,7 @@ import dev.borriguel.devfit.exception.ResourceNotFound;
 import dev.borriguel.devfit.mapper.UserMapper;
 import dev.borriguel.devfit.model.User;
 import dev.borriguel.devfit.model.dtos.UserResponseDto;
+import dev.borriguel.devfit.model.dtos.UserUpdateRequestDto;
 import dev.borriguel.devfit.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -41,10 +42,10 @@ public class UserService {
     }
 
     @Transactional
-    public User updateById(Long id, User updated) {
+    public User updateById(Long id, UserUpdateRequestDto updated) {
         var userToUpdate = getById(id);
-        userToUpdate.updateEmail(updated.getEmail());
-        userToUpdate.updatePassword(updated.getPassword());
+        userToUpdate.updateEmail(updated.email());
+        userToUpdate.updatePassword(updated.password());
         return userRepository.save(userToUpdate);
     }
 }

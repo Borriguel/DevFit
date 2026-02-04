@@ -10,6 +10,7 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,25 +20,29 @@ public class UserController {
     private final UserService service;
     private final UserMapper mapper;
 
+    @PreAuthorize("hasRole('ADMIN, MANAGER')")
     @GetMapping
     public Page<UserResponseDto> getAll(@ParameterObject Pageable page) {
         return service.getAllAsDto(page);
     }
 
+    @PreAuthorize("#id == principal.id or hasRole('ADMIN, MANAGER')")
     @GetMapping("/{id}")
     public UserResponseDto getById(@PathVariable Long id) {
         return mapper.toUserResponseDto(service.getById(id));
     }
 
+    @PreAuthorize("#id == principal.id or hasRole('ADMIN, MANAGER')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteById(@PathVariable Long id) {
         service.deleteById(id);
     }
 
+    @PreAuthorize("#id == principal.id or hasRole('ADMIN, MANAGER')")
     @PutMapping("/{id}")
     public UserResponseDto updateById(@PathVariable Long id, @RequestBody @Valid UserUpdateRequestDto dto) {
-        var updatedUser = service.updateById(id, mapper.toUser(dto));
+        var updatedUser = service.updateById(id, dto);
         return mapper.toUserResponseDto(updatedUser);
     }
 }
