@@ -10,6 +10,7 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -23,59 +24,69 @@ public class GymUnitController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize( "hasRole('ADMIN') ")
     public GymUnitResponseDto createGymUnit(@RequestBody @Valid GymUnitRequestDto dto) {
         var gym = service.createGymUnit(mapper.toGymUnit(dto));
         return mapper.toGymUnitResponseDto(gym);
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize( "hasRole('ADMIN, MANAGER, MEMBER') ")
     public GymUnitResponseDto getById(@PathVariable Long id) {
         return mapper.toGymUnitResponseDto(service.getById(id));
     }
 
     @PatchMapping("/update-monthly-fee/{id}")
+    @PreAuthorize( "hasRole('ADMIN, MANAGER') ")
     public GymUnitResponseDto updateMonthlyFeeById(@PathVariable Long id, @RequestBody BigDecimal newMonthlyFee) {
         var updatedGymUnit = service.updateMonthlyFeeById(id, newMonthlyFee);
         return mapper.toGymUnitResponseDto(updatedGymUnit);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize( "hasRole('ADMIN, MANAGER') ")
     public GymUnitResponseDto updateById(@PathVariable Long id, @RequestBody @Valid GymUnitRequestDto dto) {
         var updatedGymUnit = service.updateById(id, mapper.toGymUnit(dto));
         return mapper.toGymUnitResponseDto(updatedGymUnit);
     }
 
     @GetMapping
+    @PreAuthorize( "hasRole('ADMIN, MANAGER') ")
     public Page<GymUnitResponseDto> getAll(@ParameterObject Pageable page) {
         return service.getAllAsDto(page);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize( "hasRole('ADMIN') ")
     public void deleteById(@PathVariable Long id) {
         service.deleteById(id);
     }
 
     @PutMapping("/{destinationUnitId}/members/{memberId}/transfer")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize( "hasRole('ADMIN, MANAGER') ")
     public void reassignMemberUnit(@PathVariable Long memberId, @PathVariable Long destinationUnitId) {
         service.transferMember(memberId, destinationUnitId);
     }
 
     @PutMapping("/{destinationUnitId}/personal-trainers/{trainerId}/transfer")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize( "hasRole('ADMIN, MANAGER') ")
     public void reassignPersonalUnit(@PathVariable Long trainerId, @PathVariable Long destinationUnitId) {
         service.transferPersonal(trainerId, destinationUnitId);
     }
 
     @DeleteMapping("/managers/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize( "hasRole('ADMIN') ")
     public void removeManager(@PathVariable Long id) {
         service.removeManager(id);
     }
 
     @PatchMapping("{destinationUnitId}/managers/{managerId}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize( "hasRole('ADMIN') ")
     public void updateManager(@PathVariable Long destinationUnitId, @PathVariable Long managerId) {
         service.assignManager(destinationUnitId, managerId);
     }
