@@ -42,6 +42,14 @@ public class RegistrationService {
         return registerAndAssignProfile(user, member, dto.gymId(), GymUnit::assignMember);
     }
 
+    @Transactional
+    public void registerAdmin(String email, String password) {
+        var user = new User(email, password, Role.ADMIN);
+        var admin = new Admin("admin", "00000000000");
+        user.assignProfile(admin);
+        repository.save(user);
+    }
+
     private <P extends Profile> User registerAndAssignProfile(User user, P profile, Long gymId, BiConsumer<GymUnit, P> gymAssigner) {
         validateRegistration(user, profile);
         var gym = gymUnitService.getById(gymId);

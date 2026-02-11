@@ -10,6 +10,7 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,6 +22,7 @@ public class EventController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public EventResponseDto createEvent(@RequestBody @Valid EventRequestDto dto) {
         var event = service.createEvent(dto);
         return mapper.toSimpleDto(event);
@@ -48,23 +50,27 @@ public class EventController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public void deleteById(@PathVariable Long id) {
         service.deleteById(id);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public EventResponseDto updateById(@PathVariable Long id, @RequestBody @Valid EventRequestDto dto) {
         var eventUpdated = mapper.toEvent(dto);
         return mapper.toSimpleDto(service.updateById(id, eventUpdated));
     }
 
     @PostMapping("/{id}/join/profile/{profileId}")
+    @PreAuthorize("hasRole('MEMBER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void joinEvent(@PathVariable Long id, @PathVariable Long profileId) {
         service.joinEvent(id, profileId);
     }
 
     @PostMapping("/{id}/leave/profile/{profileId}")
+    @PreAuthorize("hasRole('MEMBER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void leaveEvent(@PathVariable Long id, @PathVariable Long profileId) {
         service.leaveEvent(id, profileId);

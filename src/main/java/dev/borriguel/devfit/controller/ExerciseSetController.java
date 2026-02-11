@@ -7,6 +7,7 @@ import dev.borriguel.devfit.service.ExerciseSetService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,11 +21,13 @@ public class ExerciseSetController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('PERSONAL_TRAINER')")
     public ExerciseSetResponseDto createExerciseSet(@RequestBody @Valid ExerciseSetRequestDto dto) {
         return mapper.toSimpleDto(service.createExerciseSet(dto));
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'PERSONAL_TRAINER', 'MEMBER')")
     public ExerciseSetResponseDto getById(@PathVariable Long id, @RequestParam(required = false) String expand) {
         boolean expandEquipment = "equipment".equalsIgnoreCase(expand);
         if (expandEquipment) return mapper.toExpandedDto(service.getByIdWithEquipment(id));
@@ -32,12 +35,14 @@ public class ExerciseSetController {
     }
 
     @GetMapping("/training-session/{trainingSessionId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'PERSONAL_TRAINER', 'MEMBER')")
     public List<ExerciseSetResponseDto> getAllByTrainingSessionId(@PathVariable Long trainingSessionId) {
         return mapper.toSimpleDtoList(service.getAllByTrainingSession(trainingSessionId));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('PERSONAL_TRAINER')")
     public void deleteById(@PathVariable Long id) {
         service.deleteById(id);
     }

@@ -12,14 +12,17 @@ import java.util.List;
 
 public class UserDetailsImpl implements UserDetails {
     @Getter
-    private final long id;
+    private final Long id;
+    @Getter
+    private final Long profileId;
     private final String email;
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
 
     public UserDetailsImpl(User user) {
-        List<GrantedAuthority> grantedAuthorities = List.of(new SimpleGrantedAuthority(user.getRole().name()));
+        List<GrantedAuthority> grantedAuthorities = List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
         this.id = user.getId();
+        this.profileId = user.getProfile().getId();
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.authorities = grantedAuthorities;

@@ -6,6 +6,7 @@ import dev.borriguel.devfit.model.dtos.TrainingSessionResponseDto;
 import dev.borriguel.devfit.service.TrainingSessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class TrainingSessionController {
 
     @PostMapping("/{trainingPlanId}/{personalId}")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('PERSONAL_TRAINER')")
     public TrainingSessionResponseDto createTrainingSession(@PathVariable Long trainingPlanId, @PathVariable Long personalId) {
         return mapper.toSimpleDto(service.createTrainingSession(trainingPlanId, personalId));
     }
@@ -40,6 +42,7 @@ public class TrainingSessionController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('PERSONAL_TRAINER')")
     public void deleteById(@PathVariable Long id) {
         service.deleteById(id);
     }

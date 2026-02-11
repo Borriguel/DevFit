@@ -5,6 +5,7 @@ import dev.borriguel.devfit.model.dtos.WorkoutLogResponseDto;
 import dev.borriguel.devfit.service.WorkoutLogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,6 +16,7 @@ public class WorkoutLogController {
     private final WorkoutLogMapper mapper;
 
     @PostMapping("/{trainingSessionId}")
+    @PreAuthorize("hasRole('MEMBER')")
     public WorkoutLogResponseDto createWorkoutLog(@PathVariable Long trainingSessionId) {
         return mapper.toSimpleDto(service.createWorkoutLog(trainingSessionId));
     }
@@ -28,6 +30,7 @@ public class WorkoutLogController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('MEMBER')")
     public void deleteById(@PathVariable Long id) {
         service.deleteById(id);
     }
