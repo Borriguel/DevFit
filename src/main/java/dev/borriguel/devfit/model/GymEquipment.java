@@ -13,7 +13,7 @@ public class GymEquipment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 30)
     private String name;
     private String description;
     private String imageUrl;
@@ -31,7 +31,7 @@ public class GymEquipment {
         if (name == null) throw new ValidationException("Name cannot be null");
         if (name.isBlank()) throw new ValidationException("Name cannot be blank");
         if (name.length() < 3) throw new ValidationException("Name must be at least 3 characters long");
-        if (name.length() > 20) throw new ValidationException("Name cannot be longer than 20 characters");
+        if (name.length() > 30) throw new ValidationException("Name cannot be longer than 20 characters");
         this.name = name;
     }
 

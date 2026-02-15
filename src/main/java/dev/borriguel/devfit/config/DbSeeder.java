@@ -1,6 +1,9 @@
 package dev.borriguel.devfit.config;
 
 import dev.borriguel.devfit.model.*;
+import dev.borriguel.devfit.repository.GymEquipmentRepository;
+import dev.borriguel.devfit.repository.GymUnitRepository;
+import dev.borriguel.devfit.repository.UserRepository;
 import dev.borriguel.devfit.service.GymEquipmentService;
 import dev.borriguel.devfit.service.GymUnitService;
 import dev.borriguel.devfit.service.RegistrationService;
@@ -16,14 +19,20 @@ public class DbSeeder implements CommandLineRunner {
     private final RegistrationService registrationService;
     private final GymUnitService gymUnitService;
     private final GymEquipmentService gymEquipmentService;
+    private final UserRepository userRepository;
+    private final GymUnitRepository gymUnitRepository;
+    private final GymEquipmentRepository gymEquipmentRepository;
 
     @Override
     public void run(String... args) throws Exception {
+        if (gymUnitRepository.count() > 0) return;
         var unit = new GymUnit("devfit", "rua dos marombas numero 572 rj", BigDecimal.valueOf(87.50));
         gymUnitService.createGymUnit(unit);
 
+        if (userRepository.count() > 0) return;
         registrationService.registerAdmin("admin@devfit.com", "devfit@admin");
 
+        if (gymEquipmentRepository.count() > 0) return;
         gymEquipmentService.createGymEquipment(new GymEquipment("Supino Reto", "Banco para supino reto com barra", "https://example.com/images/bench.jpg", Category.CHEST));
         gymEquipmentService.createGymEquipment(new GymEquipment("Supino Inclinado", "Banco para supino inclinado com halteres", "https://example.com/images/incline_bench.jpg", Category.CHEST));
         gymEquipmentService.createGymEquipment(new GymEquipment("Peck Deck", "Máquina para peitoral cruzado", "https://example.com/images/peck_deck.jpg", Category.CHEST));
