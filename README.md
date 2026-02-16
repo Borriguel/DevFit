@@ -176,6 +176,11 @@ java -jar target/DevFit-0.0.1-SNAPSHOT.jar
 
 ## 🌐 Endpoints da API
 
+> **Nota:** Todos os endpoints (exceto `/auth/login` e cadastrar membros) requerem token JWT no header:
+> ```
+> Authorization: Bearer <seu_token>
+> ```
+
 ### Autenticação
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
@@ -184,6 +189,10 @@ java -jar target/DevFit-0.0.1-SNAPSHOT.jar
 ### Usuários
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
+| `GET` | `/users` | Listar todos os usuários |
+| `GET` | `/users/{id}` | Obter usuário por ID |
+| `PUT` | `/users/{id}` | Atualizar usuário |
+| `DELETE` | `/users/{id}` | Excluir usuário |
 | `GET` | `/users/profile` | Obter perfil do usuário autenticado |
 | `PUT` | `/users/profile` | Atualizar dados do perfil |
 
@@ -191,70 +200,101 @@ java -jar target/DevFit-0.0.1-SNAPSHOT.jar
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
 | `POST` | `/register/member` | Cadastrar novo membro |
-| `POST` | `/register/personal-trainer` | Cadastrar personal trainer |
+| `POST` | `/register/personal` | Cadastrar personal trainer |
 | `POST` | `/register/manager` | Cadastrar manager |
 
 ### Membros
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
 | `GET` | `/members` | Listar todos os membros |
+| `GET` | `/members/unit/{unitId}` | Listar membros por unidade |
 | `GET` | `/members/{id}` | Obter membro por ID |
-| `PUT` | `/members/{id}/metrics` | Atualizar métricas do membro |
+| `PATCH` | `/members/update-metrics/{id}` | Atualizar métricas do membro |
+| `PATCH` | `/members/goal/{id}` | Atualizar objetivo do membro |
 
 ### Personal Trainers
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
-| `GET` | `/personal-trainers` | Listar personal trainers |
-| `GET` | `/personal-trainers/{id}` | Obter personal trainer por ID |
+| `GET` | `/personal-trainer` | Listar todos personals |
+| `GET` | `/personal-trainer/unit/{unitId}` | Listar personals por unidade |
+| `GET` | `/personal-trainer/{id}` | Obter personal por ID |
+
+### Managers
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| `GET` | `/managers` | Listar todos managers |
+| `GET` | `/managers/{id}` | Obter manager por ID |
+| `DELETE` | `/managers/{id}` | Excluir manager |
 
 ### Unidades de Academia
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
-| `GET` | `/gyms` | Listar unidades |
-| `POST` | `/gyms` | Criar nova unidade |
-| `GET` | `/gyms/{id}` | Obter unidade por ID |
-| `PUT` | `/gyms/{id}` | Atualizar unidade |
-| `DELETE` | `/gyms/{id}` | Excluir unidade |
+| `GET` | `/gym-units` | Listar unidades |
+| `POST` | `/gym-units` | Criar nova unidade |
+| `GET` | `/gym-units/{id}` | Obter unidade por ID |
+| `PUT` | `/gym-units/{id}` | Atualizar unidade |
+| `PATCH` | `/gym-units/update-monthly-fee/{id}` | Atualizar mensalidade |
+| `DELETE` | `/gym-units/{id}` | Excluir unidade |
+| `PUT` | `/gym-units/{destinationUnitId}/members/{memberId}/transfer` | Transferir membro para unidade |
+| `PUT` | `/gym-units/{destinationUnitId}/personal-trainers/{trainerId}/transfer` | Transferir personal para unidade |
+| `DELETE` | `/gym-units/managers/{id}` | Remover manager de unidade |
+| `PATCH` | `/gym-units/{destinationUnitId}/managers/{managerId}` | Atribuir manager à unidade |
 
 ### Equipamentos
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
-| `GET` | `/gym-equipments` | Listar equipamentos |
-| `POST` | `/gym-equipments` | Cadastrar equipamento |
-| `GET` | `/gym-equipments/{id}` | Obter equipamento por ID |
+| `GET` | `/gym-equipment` | Listar equipamentos |
+| `GET` | `/gym-equipment/category/{category}` | Listar equipamentos por categoria |
+| `POST` | `/gym-equipment` | Cadastrar equipamento |
+| `GET` | `/gym-equipment/{id}` | Obter equipamento por ID |
+| `PUT` | `/gym-equipment/{id}` | Atualizar equipamento |
+| `DELETE` | `/gym-equipment/{id}` | Excluir equipamento |
 
 ### Planos de Treino
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
-| `GET` | `/training-plans` | Listar planos de treino |
-| `POST` | `/training-plans` | Criar plano de treino |
-| `GET` | `/training-plans/{id}` | Obter plano por ID |
-| `PUT` | `/training-plans/{id}` | Atualizar plano |
-| `DELETE` | `/training-plans/{id}` | Excluir plano |
+| `GET` | `/training-plan` | Listar planos de treino |
+| `GET` | `/training-plan/member/{memberId}` | Listar planos por membro |
+| `GET` | `/training-plan/personal/{personalId}` | Listar planos por personal |
+| `POST` | `/training-plan` | Criar plano de treino |
+| `GET` | `/training-plan/{id}` | Obter plano por ID |
+| `PUT` | `/training-plan/{id}` | Atualizar plano |
+| `DELETE` | `/training-plan/{id}` | Excluir plano |
 
 ### Sessões de Treino
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
-| `GET` | `/training-sessions` | Listar sessões de treino |
-| `POST` | `/training-sessions` | Criar sessão de treino |
+| `POST` | `/training-session/{trainingPlanId}/{personalId}` | Criar sessão de treino |
+| `GET` | `/training-session/{id}` | Obter sessão por ID |
+| `GET` | `/training-session/training-session/{trainingSessionId}` | Listar sessões por plano |
+| `DELETE` | `/training-session/{id}` | Excluir sessão |
+
+### Séries de Exercícios
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| `POST` | `/exercise-set` | Criar série de exercício |
+| `GET` | `/exercise-set/{id}` | Obter série por ID |
+| `GET` | `/exercise-set/training-session/{trainingSessionId}` | Listar séries por sessão |
+| `DELETE` | `/exercise-set/{id}` | Excluir série |
 
 ### Registro de Treinos (Workout Logs)
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
-| `GET` | `/workout-logs` | Listar registros de treino |
-| `POST` | `/workout-logs` | Registrar treino realizado |
+| `POST` | `/workout-log/{trainingSessionId}` | Registrar treino realizado |
+| `GET` | `/workout-log/{id}` | Obter registro por ID |
+| `DELETE` | `/workout-log/{id}` | Excluir registro |
 
 ### Eventos
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
 | `GET` | `/events` | Listar eventos |
+| `GET` | `/events/gym/{gymId}` | Listar eventos por academia |
 | `POST` | `/events` | Criar evento |
 | `GET` | `/events/{id}` | Obter evento por ID |
-
-> **Nota:** Todos os endpoints (exceto `/auth/login` e cadastros públicos) requerem token JWT no header:
-> ```
-> Authorization: Bearer <seu_token>
-> ```
+| `PUT` | `/events/{id}` | Atualizar evento |
+| `DELETE` | `/events/{id}` | Excluir evento |
+| `POST` | `/events/{id}/join/profile/{profileId}` | Participar do evento |
+| `POST` | `/events/{id}/leave/profile/{profileId}` | Sair do evento |
 
 ---
 
