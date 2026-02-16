@@ -11,14 +11,10 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface PersonalTrainerMapper {
-    @Named("simpleMapping")
     @Mapping(target = "unitId", source = "unit.id")
     @Mapping(target = "unit", ignore = true)
     PersonalTrainerResponseDto toSimpleDto(PersonalTrainer personalTrainer);
 
     @Mapping(target = "unitId", source = "unit.id")
     PersonalTrainerResponseDto toExpandDto(PersonalTrainer personalTrainer);
-
-    @IterableMapping(qualifiedByName = "simpleMapping")
-    List<PersonalTrainerResponseDto> toSimpleDtoList(List<PersonalTrainer> personalTrainers);
 }

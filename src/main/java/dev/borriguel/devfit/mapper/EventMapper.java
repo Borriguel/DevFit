@@ -7,7 +7,6 @@ import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface EventMapper {
-    @Named("simpleMapping")
     @Mapping(target = "totalAttendees", source = "numberOfAttendees")
     @Mapping(target = "unitId", source = "unit.id")
     @Mapping(target = "unit", ignore = true)
