@@ -7,6 +7,9 @@ import dev.borriguel.devfit.model.dtos.TrainingPlanUpdateRequestDto;
 import dev.borriguel.devfit.service.TrainingPlanService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -42,13 +45,13 @@ public class TrainingPlanController {
     @GetMapping("/member/{memberId}")
     @PreAuthorize("hasRole('MEMBER') and #memberId.equals(principal.profileId) or hasAnyRole('PERSONAL_TRAINER', 'ADMIN')")
     public List<TrainingPlanResponseDto> getAllByMemberId(@PathVariable Long memberId) {
-        return mapper.toSimpleDtoList(service.getAllByMemberId(memberId));
+        return service.getAllByMemberIdAsDto(memberId);
     }
 
     @GetMapping("/personal/{personalId}")
     @PreAuthorize("hasRole('PERSONAL_TRAINER') and #personalId.equals(principal.profileId) or hasAnyRole('ADMIN')")
-    public List<TrainingPlanResponseDto> getAllByPersonalId(@PathVariable Long personalId) {
-        return  mapper.toSimpleDtoList(service.getAllByPersonalId(personalId));
+    public Page<TrainingPlanResponseDto> getAllByPersonalId(@PathVariable Long personalId, @ParameterObject Pageable page) {
+        return service.getAllByPersonalIdAsDto(personalId, page);
     }
 
     @PutMapping("/{id}")

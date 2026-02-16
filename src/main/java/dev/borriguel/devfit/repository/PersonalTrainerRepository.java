@@ -1,6 +1,7 @@
 package dev.borriguel.devfit.repository;
 
 import dev.borriguel.devfit.model.PersonalTrainer;
+import dev.borriguel.devfit.model.dtos.PersonalTrainerResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -16,8 +17,9 @@ public interface PersonalTrainerRepository extends JpaRepository<PersonalTrainer
     @Query("SELECT p FROM PersonalTrainer p WHERE p.id = :id")
     Optional<PersonalTrainer> findByIdWithUnit(Long id);
 
-    @Query("select p from PersonalTrainer p where p.unit.id = ?1")
-    Page<PersonalTrainer> findByUnit_Id(Long id, Pageable pageable);
+    @Query("SELECT new dev.borriguel.devfit.model.dtos.PersonalTrainerResponseDto(p.id, p.name, p.unit.id, null) FROM PersonalTrainer p WHERE p.unit.id =:id")
+    Page<PersonalTrainerResponseDto> findByUnit_IdAsDto(Long id, Pageable pageable);
 
-
+    @Query("SELECT new dev.borriguel.devfit.model.dtos.PersonalTrainerResponseDto(p.id, p.name, p.unit.id, null) FROM PersonalTrainer p")
+    Page<PersonalTrainerResponseDto> findAllAsDto(Pageable pageable);
 }

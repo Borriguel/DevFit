@@ -25,14 +25,8 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new ResourceNotFound("User not found with id: " + id));
     }
 
-    public Page<User> getAll(Pageable page) {
-        return userRepository.findAll(page);
-    }
-
     public Page<UserResponseDto> getAllAsDto(Pageable page) {
-        var usersPage = getAll(page);
-        var dtoList = mapper.toUserResponseDtoPage(usersPage.getContent());
-        return new PageImpl<>(dtoList, page, usersPage.getTotalElements());
+        return userRepository.findAllAsDto(page);
     }
 
     @Transactional

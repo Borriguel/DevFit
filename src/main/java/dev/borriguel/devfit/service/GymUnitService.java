@@ -1,7 +1,6 @@
 package dev.borriguel.devfit.service;
 
 import dev.borriguel.devfit.exception.ResourceNotFound;
-import dev.borriguel.devfit.mapper.GymUnitMapper;
 import dev.borriguel.devfit.model.GymUnit;
 import dev.borriguel.devfit.model.dtos.GymUnitResponseDto;
 import dev.borriguel.devfit.repository.GymUnitRepository;
@@ -9,7 +8,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +18,6 @@ import java.math.BigDecimal;
 @Slf4j
 public class GymUnitService {
     private final GymUnitRepository repository;
-    private final GymUnitMapper mapper;
     private final MemberService memberService;
     private final PersonalTrainerService personalService;
     private final ManagerService managerService;
@@ -34,8 +31,8 @@ public class GymUnitService {
         return repository.findById(id).orElseThrow(() -> new ResourceNotFound("Gym unit not found with id: " + id));
     }
 
-    public Page<GymUnit> getAll(Pageable page) {
-        return repository.findAll(page);
+    public Page<GymUnitResponseDto> getAll(Pageable page) {
+        return repository.findAllAsDto(page);
     }
 
     @Transactional
@@ -43,12 +40,6 @@ public class GymUnitService {
         var gymUnit = getById(id);
         gymUnit.updateMonthlyFee(newMonthlyFee);
         return repository.save(gymUnit);
-    }
-
-    public Page<GymUnitResponseDto> getAllAsDto(Pageable page) {
-        var gymUnits = getAll(page);
-        var dtoList = mapper.toGymUnitResponseDtoPage(gymUnits.getContent());
-        return new PageImpl<>(dtoList, page, gymUnits.getTotalElements());
     }
 
     @Transactional

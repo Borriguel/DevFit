@@ -3,10 +3,13 @@ package dev.borriguel.devfit.service;
 import dev.borriguel.devfit.exception.ResourceNotFound;
 import dev.borriguel.devfit.model.TrainingPlan;
 import dev.borriguel.devfit.model.dtos.TrainingPlanRequestDto;
+import dev.borriguel.devfit.model.dtos.TrainingPlanResponseDto;
 import dev.borriguel.devfit.model.dtos.TrainingPlanUpdateRequestDto;
 import dev.borriguel.devfit.repository.TrainingPlanRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,12 +45,12 @@ public class TrainingPlanService {
         return repository.findByIdWithPersonalAndMember(id).orElseThrow(() -> new ResourceNotFound("Training plan not found with id: " + id));
     }
 
-    public List<TrainingPlan> getAllByMemberId(Long memberId) {
-        return repository.findByMember_Id(memberId);
+    public List<TrainingPlanResponseDto> getAllByMemberIdAsDto(Long memberId) {
+        return repository.findByMember_IdAsDto(memberId);
     }
 
-    public List<TrainingPlan> getAllByPersonalId(Long personalId) {
-        return repository.findByPersonal_Id(personalId);
+    public Page<TrainingPlanResponseDto> getAllByPersonalIdAsDto(Long personalId, Pageable page) {
+        return repository.findByPersonal_IdAsDto(personalId, page);
     }
 
     @Transactional

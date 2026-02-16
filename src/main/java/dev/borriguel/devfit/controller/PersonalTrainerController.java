@@ -30,4 +30,10 @@ public class PersonalTrainerController {
     public Page<PersonalTrainerResponseDto> getAllByUnitId(@PathVariable Long unitId, @ParameterObject Pageable page) {
         return service.getAllByUnitIdAsDto(unitId, page);
     }
+
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public Page<PersonalTrainerResponseDto> getAll(@ParameterObject Pageable page) {
+        return service.getAllAsDto(page);
+    }
 }

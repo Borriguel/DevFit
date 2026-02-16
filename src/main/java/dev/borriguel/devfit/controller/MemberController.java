@@ -26,6 +26,12 @@ public class MemberController {
         return service.getAllAsDto(page);
     }
 
+    @GetMapping("/unit/{unitId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'PERSONAL_TRAINER')")
+    public Page<MemberResponseDto> getAllByUnitId(@PathVariable Long unitId, @ParameterObject Pageable page) {
+        return service.getAllByUnitIdAsDto(unitId, page);
+    }
+
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('MEMBER') and #id.equals(principal.profileId) or hasAnyRole('ADMIN', 'MANAGER', 'PERSONAL_TRAINER')")
     public MemberResponseDto getById(@PathVariable Long id, @RequestParam(required = false) String expand) {

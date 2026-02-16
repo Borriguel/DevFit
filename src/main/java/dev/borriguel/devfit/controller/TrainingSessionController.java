@@ -1,7 +1,6 @@
 package dev.borriguel.devfit.controller;
 
 import dev.borriguel.devfit.mapper.TrainingSessionMapper;
-import dev.borriguel.devfit.model.TrainingSession;
 import dev.borriguel.devfit.model.dtos.TrainingSessionResponseDto;
 import dev.borriguel.devfit.service.TrainingSessionService;
 import lombok.RequiredArgsConstructor;
@@ -36,8 +35,8 @@ public class TrainingSessionController {
     }
 
     @GetMapping("/training-session/{trainingSessionId}")
-    public List<TrainingSession> getAllByTrainingSessionId(@PathVariable Long trainingSessionId) {
-        return service.getAllByTrainingPlan(trainingSessionId);
+    public List<TrainingSessionResponseDto> getAllByTrainingSessionId(@PathVariable Long trainingSessionId) {
+        return service.getAllByTrainingPlanAsDto(trainingSessionId);
     }
 
     @DeleteMapping("/{id}")

@@ -7,11 +7,12 @@ import dev.borriguel.devfit.model.dtos.GymEquipmentResponseDto;
 import dev.borriguel.devfit.service.GymEquipmentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/gym-equipment")
@@ -35,8 +36,8 @@ public class GymEquipmentController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'PERSONAL_TRAINER')")
-    public List<GymEquipmentResponseDto> getAll() {
-        return mapper.toGymEquipmentResponseDtoList(service.getAll());
+    public Page<GymEquipmentResponseDto> getAll(@ParameterObject Pageable pageable) {
+        return service.getAll(pageable);
     }
 
     @DeleteMapping("/{id}")
@@ -55,7 +56,7 @@ public class GymEquipmentController {
 
     @GetMapping("/category/{category}")
     @PreAuthorize("hasAnyRole('ADMIN', 'PERSONAL_TRAINER')")
-    public List<GymEquipmentResponseDto> getAllByCategory(@PathVariable Category category) {
-        return mapper.toGymEquipmentResponseDtoList(service.getAllByCategory(category));
+    public Page<GymEquipmentResponseDto> getAllByCategory(@PathVariable Category category, @ParameterObject Pageable pageable) {
+        return service.getAllByCategory(category, pageable);
     }
 }

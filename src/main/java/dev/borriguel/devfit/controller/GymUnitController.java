@@ -24,7 +24,7 @@ public class GymUnitController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public GymUnitResponseDto createGymUnit(@RequestBody @Valid GymUnitRequestDto dto) {
         var gym = service.createGymUnit(mapper.toGymUnit(dto));
         return mapper.toGymUnitResponseDto(gym);
@@ -52,7 +52,7 @@ public class GymUnitController {
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public Page<GymUnitResponseDto> getAll(@ParameterObject Pageable page) {
-        return service.getAllAsDto(page);
+        return service.getAll(page);
     }
 
     @DeleteMapping("/{id}")

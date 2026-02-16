@@ -2,6 +2,7 @@ package dev.borriguel.devfit.service;
 
 import dev.borriguel.devfit.exception.ResourceNotFound;
 import dev.borriguel.devfit.model.TrainingSession;
+import dev.borriguel.devfit.model.dtos.TrainingSessionResponseDto;
 import dev.borriguel.devfit.repository.TrainingSessionRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -41,8 +42,8 @@ public class TrainingSessionService {
         return repository.findByIdWithTrainingPlan(id).orElseThrow(() -> new ResourceNotFound("Training session not found with id: " + id));
     }
 
-    public List<TrainingSession> getAllByTrainingPlan(Long trainingPlanId) {
-        return repository.findByTrainingPlan_Id(trainingPlanId);
+    public List<TrainingSessionResponseDto> getAllByTrainingPlanAsDto(Long trainingPlanId) {
+        return repository.findByTrainingPlan_IdAsDto(trainingPlanId);
     }
 
     @Transactional
