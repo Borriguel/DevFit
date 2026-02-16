@@ -9,6 +9,7 @@ import dev.borriguel.devfit.service.RegistrationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,12 +21,14 @@ public class RegistrationController {
 
     @PostMapping("/manager")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ADMIN')")
     public UserResponseDto registerManager(@RequestBody @Valid ManagerRegistrationDto dto) {
         return mapper.toUserResponseDto(service.registerManager(dto));
     }
 
     @PostMapping("/personal")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public UserResponseDto registerPersonalTrainer(@RequestBody @Valid PersonalTrainerRegistrationDto dto) {
         return mapper.toUserResponseDto(service.registerPersonalTrainer(dto));
     }
