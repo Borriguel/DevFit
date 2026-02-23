@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface TrainingSessionRepository extends JpaRepository<TrainingSession, Long> {
-    @Query("SELECT new dev.borriguel.devfit.model.dtos.TrainingSessionResponseDto(t.id, t.trainingPlan.id, null, t.exercises.size, null) FROM TrainingSession t WHERE t.trainingPlan.id =:id")
+    @Query("SELECT new dev.borriguel.devfit.model.dtos.TrainingSessionResponseDto(t.id, t.trainingPlan.id, null, SIZE(t.exercises), null) FROM TrainingSession t WHERE t.trainingPlan.id =:id")
     List<TrainingSessionResponseDto> findByTrainingPlan_IdAsDto(Long id);
 
     @EntityGraph(attributePaths = {"trainingPlan"})
