@@ -3,6 +3,7 @@ package dev.borriguel.devfit.service;
 import dev.borriguel.devfit.exception.ResourceNotFound;
 import dev.borriguel.devfit.model.ExerciseSet;
 import dev.borriguel.devfit.model.dtos.ExerciseSetRequestDto;
+import dev.borriguel.devfit.model.dtos.ExerciseSetResponseDto;
 import dev.borriguel.devfit.repository.ExerciseSetRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +37,7 @@ public class ExerciseSetService {
         return repository.findByIdWithEquipment(id).orElseThrow(() -> new ResourceNotFound("Exercise set not found with id: " + id));
     }
 
-    public List<ExerciseSet> getAllByTrainingSession(Long trainingSessionId) {
+    public List<ExerciseSetResponseDto> getAllByTrainingSession(Long trainingSessionId) {
         return repository.findBySession_Id(trainingSessionId);
     }
 

@@ -43,7 +43,7 @@ public class ExerciseSetController {
     @PreAuthorize("hasAnyRole('ADMIN', 'PERSONAL_TRAINER', 'MEMBER')")
     @Operation(summary = "Listar séries por sessão de treino", description = "Retorna todas as séries de exercícios de uma sessão de treino específica")
     public List<ExerciseSetResponseDto> getAllByTrainingSessionId(@PathVariable Long trainingSessionId) {
-        return mapper.toSimpleDtoList(service.getAllByTrainingSession(trainingSessionId));
+        return service.getAllByTrainingSession(trainingSessionId);
     }
 
     @DeleteMapping("/{id}")
